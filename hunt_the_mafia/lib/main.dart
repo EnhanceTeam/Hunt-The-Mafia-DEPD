@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.deepPurple,
       ),
       debugShowCheckedModeBanner: false,
-      home: const Mainmenu(),
+      home: const Game(),
     );
   }
 }
