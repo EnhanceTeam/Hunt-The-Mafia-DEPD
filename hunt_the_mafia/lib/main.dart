@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
         initialRoute: MainMenuPage.routeName,
         routes: {
           MainMenuPage.routeName: (context) => const MainMenuPage(),
+          ShopPage.routeName: (context) => const ShopPage(),
         },
       );
     });
