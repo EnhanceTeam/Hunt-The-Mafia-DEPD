@@ -5,6 +5,9 @@ import 'package:lottie/lottie.dart';
 
 part "game.dart";
 part 'page_game_room.dart';
+part 'mainmenu.dart';
+part '../joinroom.dart';
+part '../createroom.dart';
 part 'page_mainmenu.dart';
 part 'page_dummy.dart';
 part 'page_shop.dart';
