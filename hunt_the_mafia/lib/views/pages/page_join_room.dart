@@ -1,13 +1,15 @@
 part of 'pages.dart';
 
-class Joinroom extends StatefulWidget {
-  const Joinroom({super.key});
+class JoinRoomPage extends StatefulWidget {
+  const JoinRoomPage({super.key});
+
+  static const String routeName = "/join-room";
 
   @override
-  State<Joinroom> createState() => _JoinroomState();
+  State<JoinRoomPage> createState() => _JoinRoomPageState();
 }
 
-class _JoinroomState extends State<Joinroom> {
+class _JoinRoomPageState extends State<JoinRoomPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
