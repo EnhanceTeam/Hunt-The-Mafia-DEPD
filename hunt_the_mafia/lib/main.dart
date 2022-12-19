@@ -20,10 +20,11 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: MyTheme.lightTheme(lightColorScheme),
         darkTheme: MyTheme.darkTheme(darkColorScheme),
-        initialRoute: MainMenuPage.routeName,
+        initialRoute: GameRoomPage.routeName,
         routes: {
           MainMenuPage.routeName: (context) => const MainMenuPage(),
           ShopPage.routeName: (context) => const ShopPage(),
+          GameRoomPage.routeName: (context) => const GameRoomPage(),
         },
       );
     });

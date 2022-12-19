@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../shared/shared.dart';
 import '../../theme/space.dart';
 
 part 'components/button.dart';
@@ -10,3 +12,4 @@ part 'components/spacer.dart';
 part 'components/text_field.dart';
 
 part 'shop_item_card.dart';
+part 'waiting_room_player_item.card.dart';
