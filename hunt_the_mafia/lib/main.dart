@@ -19,9 +19,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: MyTheme.lightTheme(lightColorScheme),
         darkTheme: MyTheme.darkTheme(darkColorScheme),
-        initialRoute: "/",
+        initialRoute: "/main-menu",
         routes: {
-          Page.routeName: (context) => Page(),
+          MainMenuPage.routeName: (context) => MainMenuPage(),
         },
       );
     });

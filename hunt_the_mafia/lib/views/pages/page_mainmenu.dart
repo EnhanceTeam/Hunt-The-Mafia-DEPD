@@ -1,13 +1,14 @@
 part of 'pages.dart';
 
-class Mainmenu extends StatefulWidget {
-  const Mainmenu({Key? key}) : super(key: key);
+class MainMenuPage extends StatefulWidget {
+  const MainMenuPage({Key? key}) : super(key: key);
+  static const String routeName = "/main-menu";
 
   @override
-  _MainmenuState createState() => _MainmenuState();
+  _MainMenuPageState createState() => _MainMenuPageState();
 }
 
-class _MainmenuState extends State<Mainmenu> {
+class _MainMenuPageState extends State<MainMenuPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
