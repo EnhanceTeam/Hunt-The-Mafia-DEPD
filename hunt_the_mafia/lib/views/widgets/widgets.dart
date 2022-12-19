@@ -8,9 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../shared/shared.dart';
 import '../../theme/space.dart';
 
-part 'dialog_guess.dart';
-part 'dialog_win.dart';
-part 'dialog_lose.dart';
+part 'dialog_game.dart';
 
 part 'components/button.dart';
 part 'components/card.dart';
