@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
-
-part 'card_win.dart';
-part 'card_lose.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hunt_the_mafia/shared/global_context_service.dart';
 
 import '../../theme/space.dart';
+
+part 'dialog_guess.dart';
+part 'dialog_win.dart';
+part 'dialog_lose.dart';
 
 part 'components/button.dart';
 part 'components/card.dart';
