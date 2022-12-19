@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hunt_the_mafia/theme/space.dart';
 import 'package:hunt_the_mafia/views/widgets/widgets.dart';
-import 'package:lottie/lottie.dart';
 
 part "page_game.dart";
 part 'page_game_room.dart';

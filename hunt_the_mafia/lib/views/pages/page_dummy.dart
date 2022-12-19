@@ -13,26 +13,75 @@ class _DummyPageState extends State<DummyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Dummy Page"),
+        title: const Text("Dummy Page"),
         centerTitle: true,
       ),
       body: Stack(
         children: [
-          Container(
+          SizedBox(
             width: double.infinity,
             height: double.infinity,
             child: Column(
               children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, MainMenuPage.routeName);
+                  },
+                  child: const Text("Main menu"),
+                ),
+                SizedSpacer.vertical(),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, CreateRoomPage.routeName);
+                  },
+                  child: const Text("Create room"),
+                ),
+                SizedSpacer.vertical(),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, JoinRoomPage.routeName);
+                  },
+                  child: const Text("Join room"),
+                ),
+                SizedSpacer.vertical(),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, ShopPage.routeName);
+                  },
+                  child: const Text("Shop"),
+                ),
+                SizedSpacer.vertical(),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, GameRoomPage.routeName);
+                  },
+                  child: const Text("Game room"),
+                ),
+                SizedSpacer.vertical(),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, GamePage.routeName);
+                  },
+                  child: const Text("Game"),
+                ),
                 SizedSpacer.vertical(),
                 ElevatedButton(
                     onPressed: () {
-                      GameDialog.guessDialog(context: context);
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            GameDialog.guessDialog(context: context),
+                      );
                     },
                     child: const Text("Take a Guess Mr. White")),
                 SizedSpacer.vertical(),
                 ElevatedButton(
                     onPressed: () {
-                      GameDialog.winDialog(context: context);
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            GameDialog.winDialog(context: context),
+                      );
                     },
                     child: const Text("Winner PopUp")),
               ],
@@ -42,47 +91,4 @@ class _DummyPageState extends State<DummyPage> {
       ),
     );
   }
-
-  // Future guessDialog() => showDialog(
-  //       context: context,
-  //       builder: (context) => AlertDialog(
-  //         title: const Text("Kamu adalah Mr. White. Silahkan tebak kata"),
-  //         content: const TextField(
-  //           decoration:
-  //               InputDecoration(hintText: "Tuliskan tebakanmu disini..."),
-  //         ),
-  //         actions: [
-  //           TextButton(
-  //               onPressed: () {
-  //                 Navigator.of(context).pop();
-  //               },
-  //               child: Text("Submit"))
-  //         ],
-  //       ),
-  //     );
-  //
-  // Future winDialog() => showDialog(
-  //       context: context,
-  //       builder: (context) => AlertDialog(
-  //         title: const Text("Congratulations!"),
-  //         content: Wrap(children: [
-  //           Center(
-  //             child: Column(
-  //               children: [
-  //                 Lottie.asset("assets/lottie/champion.json", width: 200),
-  //                 Text("Semua mafia telah dikalahkan."),
-  //                 Text(" Tim Civillian menang!"),
-  //               ],
-  //             ),
-  //           ),
-  //         ]),
-  //         actions: [
-  //           TextButton(
-  //               onPressed: () {
-  //                 Navigator.of(context).pop();
-  //               },
-  //               child: Text("Hooray!"))
-  //         ],
-  //       ),
-  //     );
 }

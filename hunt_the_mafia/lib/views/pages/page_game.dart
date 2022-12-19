@@ -1,13 +1,15 @@
 part of "pages.dart";
 
-class Game extends StatefulWidget {
-  const Game({Key? key}) : super(key: key);
+class GamePage extends StatefulWidget {
+  const GamePage({super.key});
+
+  static const String routeName = "/game";
 
   @override
-  _GameState createState() => _GameState();
+  State<GamePage> createState() => _GamePageState();
 }
 
-class _GameState extends State<Game> {
+class _GamePageState extends State<GamePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

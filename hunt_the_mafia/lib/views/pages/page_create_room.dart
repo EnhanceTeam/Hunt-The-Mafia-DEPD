@@ -1,13 +1,15 @@
 part of 'pages.dart';
 
-class Createroom extends StatefulWidget {
-  const Createroom({super.key});
+class CreateRoomPage extends StatefulWidget {
+  const CreateRoomPage({super.key});
+
+  static const String routeName = "/create-room";
 
   @override
-  State<Createroom> createState() => _CreateroomState();
+  State<CreateRoomPage> createState() => _CreateRoomPageState();
 }
 
-class _CreateroomState extends State<Createroom> {
+class _CreateRoomPageState extends State<CreateRoomPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,13 +33,13 @@ class _CreateroomState extends State<Createroom> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                        "Enter Code",
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontFamily: "Poppins"),
-                      ),
+                      "Enter Code",
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontFamily: "Poppins"),
+                    ),
                   ],
                 ),
                 SizedBox(
