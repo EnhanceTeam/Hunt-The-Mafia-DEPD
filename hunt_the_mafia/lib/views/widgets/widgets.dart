@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hunt_the_mafia/shared/global_context_service.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../theme/space.dart';
 
