@@ -1,1 +1,1 @@
-# hunt-the-mafia-depd
+# Hunt-The-Mafia
