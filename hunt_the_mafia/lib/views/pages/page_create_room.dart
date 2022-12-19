@@ -1,4 +1,4 @@
-part of 'pages/pages.dart';
+part of 'pages.dart';
 
 class Createroom extends StatefulWidget {
   const Createroom({super.key});

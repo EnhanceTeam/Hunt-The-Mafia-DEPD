@@ -1,4 +1,4 @@
-part of 'pages/pages.dart';
+part of 'pages.dart';
 
 class Joinroom extends StatefulWidget {
   const Joinroom({super.key});
