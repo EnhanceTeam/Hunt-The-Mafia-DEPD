@@ -32,14 +32,22 @@ class _DummyPageState extends State<DummyPage> {
                 SizedSpacer.vertical(),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, CreateRoomPage.routeName);
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            GameDialog.createDialog(context: context),
+                      );
                   },
                   child: const Text("Create room"),
                 ),
                 SizedSpacer.vertical(),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, JoinRoomPage.routeName);
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            GameDialog.joinDialog(context: context),
+                      );
                   },
                   child: const Text("Join room"),
                 ),
