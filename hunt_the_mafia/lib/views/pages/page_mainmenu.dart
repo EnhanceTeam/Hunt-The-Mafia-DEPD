@@ -28,7 +28,14 @@ class _MainMenuPageState extends State<MainMenuPage> {
                 height: 32,
               ),
               RawMaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  // todo: show create or join room pop up
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        GameDialog.createOrJoinDialog(context: context),
+                  );
+                },
                 splashColor: Color.fromARGB(255, 255, 183, 0),
                 elevation: 2.0,
                 fillColor: Color.fromARGB(255, 49, 26, 70),
