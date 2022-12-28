@@ -163,6 +163,9 @@ class GameDialog {
   }
 
   static AlertDialog createDialog({required BuildContext context}) {
+    final ctrlNickname = TextEditingController();
+    final _formKey = GlobalKey<FormState>();
+
     return AlertDialog(
       backgroundColor: Color(0xFF311A46),
       content: Wrap(children: [
@@ -182,6 +185,8 @@ class GameDialog {
                 height: 60,
                 child: Form(
                     child: TextFormField(
+                  key: _formKey,
+                  controller: ctrlNickname,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
@@ -190,6 +195,18 @@ class GameDialog {
                         borderRadius: BorderRadius.circular(30.0)),
                     hintText: 'Enter nickname!',
                   ),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter nickname';
+                    }
+
+                    if (value.length > 8) {
+                      return 'Nickname must be less than 8 characters';
+                    }
+
+                    return null;
+                  },
                 )),
               ),
               SizedBox(
@@ -208,7 +225,23 @@ class GameDialog {
                       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                       textStyle:
                           TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-                  onPressed: (() {}),
+                  onPressed: (() {
+                    // todo: create room and change page to room page
+                    if (ctrlNickname == null || ctrlNickname.text.isEmpty) {
+                      // Toast null nickname error
+                    } else if (ctrlNickname.text.length > 8) {
+                      // Toast nickname too long error
+                    } else {
+                      CreateRoomService.addRooms(ctrlNickname.text.trim())
+                          .then((value) => {
+                                // Navigate to room page
+                              })
+                          .catchError((onError) => {
+                                // Toast firebase or connection error
+                              });
+                      // Navigate to room page
+                    }
+                  }),
                   child: const Text(
                     'Submit',
                     style: TextStyle(color: Color(0xFF311A46)),
