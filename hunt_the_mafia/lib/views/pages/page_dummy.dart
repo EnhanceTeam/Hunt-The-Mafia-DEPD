@@ -12,6 +12,7 @@ class _DummyPageState extends State<DummyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("Dummy Page"),
         centerTitle: true,
@@ -33,10 +34,10 @@ class _DummyPageState extends State<DummyPage> {
                 ElevatedButton(
                   onPressed: () {
                     showDialog(
-                        context: context,
-                        builder: (BuildContext context) =>
-                            GameDialog.createDialog(context: context),
-                      );
+                      context: context,
+                      builder: (BuildContext context) =>
+                          GameDialog.createDialog(context: context),
+                    );
                   },
                   child: const Text("Create room"),
                 ),
@@ -44,10 +45,10 @@ class _DummyPageState extends State<DummyPage> {
                 ElevatedButton(
                   onPressed: () {
                     showDialog(
-                        context: context,
-                        builder: (BuildContext context) =>
-                            GameDialog.joinDialog(context: context),
-                      );
+                      context: context,
+                      builder: (BuildContext context) =>
+                          GameDialog.joinDialog(context: context),
+                    );
                   },
                   child: const Text("Join room"),
                 ),

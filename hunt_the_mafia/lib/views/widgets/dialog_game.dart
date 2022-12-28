@@ -41,7 +41,7 @@ class GameDialog {
     );
   }
 
-  static AlertDialog createDialog({required BuildContext context}) {
+  static AlertDialog joinDialog({required BuildContext context}) {
     return AlertDialog(
       backgroundColor: Color(0xFF311A46),
       content: Wrap(children: [
@@ -96,7 +96,7 @@ class GameDialog {
     );
   }
 
-  static AlertDialog joinDialog({required BuildContext context}) {
+  static AlertDialog createOrJoinDialog({required BuildContext context}) {
     return AlertDialog(
       backgroundColor: Color(0xFF311A46),
       content: Wrap(children: [
@@ -151,6 +151,66 @@ class GameDialog {
                   onPressed: (() {}),
                   child: const Text(
                     'Joinroom Game with Code',
+                    style: TextStyle(color: Color(0xFF311A46)),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )),
+      ]),
+    );
+  }
+
+  static AlertDialog createDialog({required BuildContext context}) {
+    return AlertDialog(
+      backgroundColor: Color(0xFF311A46),
+      content: Wrap(children: [
+        Center(
+            child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.0),
+            color: Color(0xFF311A46),
+          ),
+          height: 220,
+          width: 330,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 250,
+                height: 60,
+                child: Form(
+                    child: TextFormField(
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: EdgeInsets.all(16),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0)),
+                    hintText: 'Enter nickname!',
+                  ),
+                )),
+              ),
+              SizedBox(
+                width: 250,
+                height: 20,
+              ),
+              SizedBox(
+                width: 150,
+                height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: (RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      )),
+                      backgroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                      textStyle:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                  onPressed: (() {}),
+                  child: const Text(
+                    'Submit',
                     style: TextStyle(color: Color(0xFF311A46)),
                   ),
                 ),
