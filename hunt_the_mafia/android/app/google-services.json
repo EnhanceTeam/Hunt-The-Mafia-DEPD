@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "866597882686",
+    "project_id": "hunt-the-mafia",
+    "storage_bucket": "hunt-the-mafia.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:866597882686:android:d792e769df69d2dafeba6f",
+        "android_client_info": {
+          "package_name": "com.enhance.hunt_the_mafia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "866597882686-mnou1v248r3esn15he08rjt1uvrtu6eh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.enhance.hunt_the_mafia",
+            "certificate_hash": "d7986b69b86b33e8114e38f2076c5358596ec921"
+          }
+        },
+        {
+          "client_id": "866597882686-gc0mi3ujrvngf92c8f0p0a4s9tl1ushp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGPnuEUA0zlq6xEcMCc5tw4b7_excgEgc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "866597882686-gc0mi3ujrvngf92c8f0p0a4s9tl1ushp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "866597882686-hbq8gsqmto7kaprtp94oatjfqeitg8ol.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.enhance.huntTheMafia"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
