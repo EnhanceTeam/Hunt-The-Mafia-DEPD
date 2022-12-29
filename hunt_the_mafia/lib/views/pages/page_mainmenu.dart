@@ -29,8 +29,14 @@ class _MainMenuPageState extends State<MainMenuPage> {
               ),
               RawMaterialButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, GameRoomPage.routeName);
+                  // todo: show create or join room pop up
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        GameDialog.createOrJoinDialog(context: context),
+                  );
                 },
+                splashColor: Color.fromARGB(255, 255, 183, 0),
                 elevation: 2.0,
                 fillColor: Const.baseColor,
                 child: Icon(
