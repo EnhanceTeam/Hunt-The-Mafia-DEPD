@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
       return MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Hunt The Mafia',
         debugShowCheckedModeBanner: false,
         theme: MyTheme.lightTheme(lightColorScheme),
         darkTheme: MyTheme.darkTheme(darkColorScheme),
@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
           ShopPage.routeName: (context) => const ShopPage(),
           GameRoomPage.routeName: (context) => const GameRoomPage(),
           GamePage.routeName: (context) => const GamePage(),
+          SettingPage.routeName: (context) => const SettingPage(),
         },
       );
     });
