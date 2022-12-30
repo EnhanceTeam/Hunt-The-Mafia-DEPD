@@ -124,7 +124,15 @@ class GameDialog {
                           EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                       textStyle: TextStyle(
                           fontSize: 18, fontWeight: FontWeight.normal)),
-                  onPressed: (() {}),
+                  onPressed: (() {
+                    // todo: Navigate to create room pop up
+                    Navigator.pop(context);
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          GameDialog.createDialog(context: context),
+                    );
+                  }),
                   child: const Text(
                     'Create New Game',
                     style: TextStyle(color: Color(0xFF311A46)),
@@ -148,7 +156,14 @@ class GameDialog {
                           EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                       textStyle: TextStyle(
                           fontSize: 18, fontWeight: FontWeight.normal)),
-                  onPressed: (() {}),
+                  onPressed: (() {
+                    Navigator.pop(context);
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          GameDialog.joinDialog(context: context),
+                    );
+                  }),
                   child: const Text(
                     'Joinroom Game with Code',
                     style: TextStyle(color: Color(0xFF311A46)),
@@ -228,18 +243,38 @@ class GameDialog {
                   onPressed: (() {
                     // todo: create room and change page to room page
                     if (ctrlNickname == null || ctrlNickname.text.isEmpty) {
-                      // Toast null nickname error
+                      Fluttertoast.showToast(
+                          msg: "Nickname cannot be empty!",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
                     } else if (ctrlNickname.text.length > 8) {
-                      // Toast nickname too long error
+                      Fluttertoast.showToast(
+                          msg: "Nickname cannot be more than 8 characters!",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
                     } else {
                       CreateRoomService.addRooms(ctrlNickname.text.trim())
                           .then((value) => {
-                                // Navigate to room page
+                                // todo: Navigate to room page
                               })
-                          .catchError((onError) => {
-                                // Toast firebase or connection error
+                          .catchError((error) => {
+                                Fluttertoast.showToast(
+                                    msg: "Error: $error",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0)
                               });
-                      // Navigate to room page
                     }
                   }),
                   child: const Text(
