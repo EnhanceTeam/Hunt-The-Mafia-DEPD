@@ -3,6 +3,8 @@ part of 'pages.dart';
 class PreparationPage extends StatefulWidget {
   const PreparationPage({Key? key}) : super(key: key);
 
+  static const String routeName = "/preparation";
+
   @override
   State<PreparationPage> createState() => _PreparationPageState();
 }

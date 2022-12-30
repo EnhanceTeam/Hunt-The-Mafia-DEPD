@@ -33,6 +33,13 @@ class _DummyPageState extends State<DummyPage> {
                 SizedSpacer.vertical(),
                 ElevatedButton(
                   onPressed: () {
+                    Navigator.pushNamed(context, PreparationPage.routeName);
+                  },
+                  child: const Text("Preparation Page"),
+                ),
+                SizedSpacer.vertical(),
+                ElevatedButton(
+                  onPressed: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) =>
