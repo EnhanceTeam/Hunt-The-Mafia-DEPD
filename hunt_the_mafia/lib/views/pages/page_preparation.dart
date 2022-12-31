@@ -211,7 +211,23 @@ class _PreparationPageState extends State<PreparationPage> {
               FilledButton(
                 label: 'Start Game',
                 maxSize: true,
-                onPressed: () {},
+                onPressed: () {
+                  RoleCountService.addRole(widget.roomId, "civilian_count", _civilianCount);
+                  RoleCountService.addRole(widget.roomId, "mafia_count", _mafiaCount);
+                  RoleCountService.addRole(widget.roomId, "mr_white_count", _mrWhiteCount);
+                  RoleCountService.addRole(widget.roomId, "mr_black_count", _mrBlackCount);
+
+                  // todo: navigate to game lobby
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => GameScreen(
+                  //       roomId: widget.roomId,
+                  //     ),
+                  //   ),
+                  // );
+
+                },
               )
             ],
           ),
