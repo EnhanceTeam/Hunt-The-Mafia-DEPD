@@ -16,6 +16,7 @@ class _PreparationPageState extends State<PreparationPage> {
   int _mafiaCount = 1;
   int _mrWhiteCount = 0;
   int _mrBlackCount = 0;
+  late int _totalCount;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +75,13 @@ class _PreparationPageState extends State<PreparationPage> {
                           ),
                           onPressed: () {
                             setState(() {
-                              _civilianCount++;
+                              _totalCount = _civilianCount +
+                                  _mafiaCount +
+                                  _mrWhiteCount +
+                                  _mrBlackCount;
+                              if (_totalCount < 20) {
+                                _civilianCount++;
+                              }
                             });
                           },
                           child: const Icon(Icons.add, color: Colors.black),
@@ -115,7 +122,13 @@ class _PreparationPageState extends State<PreparationPage> {
                           ),
                           onPressed: () {
                             setState(() {
-                              _mafiaCount++;
+                              _totalCount = _civilianCount +
+                                  _mafiaCount +
+                                  _mrWhiteCount +
+                                  _mrBlackCount;
+                              if (_mafiaCount < (_civilianCount - 3) && _totalCount < 20) {
+                                _mafiaCount++;
+                              }
                             });
                           },
                           child: const Icon(Icons.add, color: Colors.black),
@@ -156,7 +169,13 @@ class _PreparationPageState extends State<PreparationPage> {
                           ),
                           onPressed: () {
                             setState(() {
-                              _mrWhiteCount++;
+                              _totalCount = _civilianCount +
+                                  _mafiaCount +
+                                  _mrWhiteCount +
+                                  _mrBlackCount;
+                              if (_mrWhiteCount < 1 && _totalCount < 20) {
+                                _mrWhiteCount++;
+                              }
                             });
                           },
                           child: const Icon(Icons.add, color: Colors.black),
@@ -197,12 +216,22 @@ class _PreparationPageState extends State<PreparationPage> {
                           ),
                           onPressed: () {
                             setState(() {
-                              _mrBlackCount++;
+                              _totalCount = _civilianCount +
+                                  _mafiaCount +
+                                  _mrWhiteCount +
+                                  _mrBlackCount;
+                              if (_mrBlackCount < 1 && _totalCount < 20) {
+                                _mrBlackCount++;
+                              }
                             });
                           },
                           child: const Icon(Icons.add, color: Colors.black),
                         ),
                       ],
+                    ),
+                    SizedSpacer.vertical(space: Space.large),
+                    const Text(
+                      'Note: Total maximum players is 20', style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ],
                 ),
@@ -212,10 +241,14 @@ class _PreparationPageState extends State<PreparationPage> {
                 label: 'Start Game',
                 maxSize: true,
                 onPressed: () {
-                  RoleCountService.addRole(widget.roomId, "civilian_count", _civilianCount);
-                  RoleCountService.addRole(widget.roomId, "mafia_count", _mafiaCount);
-                  RoleCountService.addRole(widget.roomId, "mr_white_count", _mrWhiteCount);
-                  RoleCountService.addRole(widget.roomId, "mr_black_count", _mrBlackCount);
+                  RoleCountService.addRole(
+                      widget.roomId, "civilian_count", _civilianCount);
+                  RoleCountService.addRole(
+                      widget.roomId, "mafia_count", _mafiaCount);
+                  RoleCountService.addRole(
+                      widget.roomId, "mr_white_count", _mrWhiteCount);
+                  RoleCountService.addRole(
+                      widget.roomId, "mr_black_count", _mrBlackCount);
 
                   // todo: navigate to game lobby
                   // Navigator.push(
@@ -226,7 +259,6 @@ class _PreparationPageState extends State<PreparationPage> {
                   //     ),
                   //   ),
                   // );
-
                 },
               )
             ],
