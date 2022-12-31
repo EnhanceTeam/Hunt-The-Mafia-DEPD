@@ -289,4 +289,50 @@ class GameDialog {
       ]),
     );
   }
+
+  static AlertDialog roleDialog({required BuildContext context}) {
+    return AlertDialog(
+      content: Wrap(
+        children: [
+          Center(
+            child: Column(
+              children: [
+                SizedSpacer.vertical(space: Space.medium),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Daniel", style: TextStyle(fontSize: 18)),
+                    SizedSpacer.horizontal(space: Space.small),
+                    CircleAvatar(
+                      backgroundColor:
+                          Theme.of(context).colorScheme.onSurfaceVariant,
+                      child: Text(
+                        'D',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                      ),
+                    ),
+                    SizedSpacer.horizontal(space: Space.small),
+                    const Text("Civilian", style: TextStyle(fontSize: 18)),
+                  ],
+                ),
+                SizedSpacer.vertical(space: Space.medium),
+                const Text('Your secret word is:', style: TextStyle(fontSize: 14, color: Colors.black54)),
+                SizedSpacer.vertical(space: Space.medium),
+                const Text('Sandals', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              ],
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("OK"))
+      ],
+    );
+  }
 }

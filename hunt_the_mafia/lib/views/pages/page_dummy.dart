@@ -100,6 +100,16 @@ class _DummyPageState extends State<DummyPage> {
                       );
                     },
                     child: const Text("Winner PopUp")),
+                SizedSpacer.vertical(),
+                ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            GameDialog.roleDialog(context: context),
+                      );
+                    },
+                    child: const Text("Role&Word PopUp")),
               ],
             ),
           ),
