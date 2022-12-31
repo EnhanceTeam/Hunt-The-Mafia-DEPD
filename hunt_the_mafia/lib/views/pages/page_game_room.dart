@@ -15,12 +15,12 @@ class _GameRoomPageState extends State<GameRoomPage> {
     return Scaffold(
       body: SafeArea(
         minimum: const EdgeInsets.all(Space.large),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedSpacer.vertical(space: Space.medium),
-            Flexible(
-              child: Column(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: Space.medium),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
                 children: [
                   Text(
                     'Room Code',
@@ -33,39 +33,39 @@ class _GameRoomPageState extends State<GameRoomPage> {
                   ),
                 ],
               ),
-            ),
-            Expanded(
-              flex: 6,
-              child: Container(
-                padding: const EdgeInsets.all(Space.small),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.circular(12.0)),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      const WaitingRoomPlayerItemCard(
-                        playerName: 'Daniel',
-                        isHost: true,
-                      ),
-                      SizedSpacer.vertical(space: Space.medium),
-                      Text(
-                        'Waiting for players...',
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary),
-                      ),
-                    ],
+              SizedSpacer.vertical(space: Space.medium),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(Space.small),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.circular(12.0)),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const WaitingRoomPlayerItemCard(
+                          playerName: 'Daniel',
+                          isHost: true,
+                        ),
+                        SizedSpacer.vertical(space: Space.medium),
+                        Text(
+                          'Waiting for players...',
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            Flexible(
-                child: FilledButton(
-              label: 'Start Game',
-              maxSize: true,
-              onPressed: () {},
-            )),
-          ],
+              SizedSpacer.vertical(space: Space.medium),
+              FilledButton(
+                label: 'Start Game',
+                maxSize: true,
+                onPressed: () {},
+              ),
+            ],
+          ),
         ),
       ),
     );
