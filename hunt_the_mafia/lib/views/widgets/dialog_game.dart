@@ -263,8 +263,16 @@ class GameDialog {
                     } else {
                       CreateRoomService.addRooms(ctrlNickname.text.trim())
                           .then((value) => {
-                                Navigator.pushNamed(
-                                    context, PreparationPage.routeName)
+                                // Navigate to preparation page
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: ((context) => PreparationPage(
+                                          roomId: CreateRoomService
+                                              .getCurrentRoomId(),
+                                        )),
+                                  ),
+                                )
                               })
                           .catchError((error) => {
                                 Fluttertoast.showToast(

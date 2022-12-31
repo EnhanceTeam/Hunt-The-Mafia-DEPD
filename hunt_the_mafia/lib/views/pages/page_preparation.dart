@@ -1,9 +1,11 @@
 part of 'pages.dart';
 
 class PreparationPage extends StatefulWidget {
-  const PreparationPage({Key? key}) : super(key: key);
+  const PreparationPage({Key? key, required this.roomId}) : super(key: key);
 
   static const String routeName = "/preparation";
+
+  final String roomId;
 
   @override
   State<PreparationPage> createState() => _PreparationPageState();
@@ -35,7 +37,7 @@ class _PreparationPageState extends State<PreparationPage> {
                     ),
                     SizedSpacer.vertical(space: Space.medium),
                     Text(
-                      'N1310',
+                      widget.roomId,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ],
