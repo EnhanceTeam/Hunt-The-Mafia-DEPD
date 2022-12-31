@@ -16,6 +16,7 @@ class _PreparationPageState extends State<PreparationPage> {
   int _mafiaCount = 1;
   int _mrWhiteCount = 0;
   int _mrBlackCount = 0;
+  late int _totalCount;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +75,13 @@ class _PreparationPageState extends State<PreparationPage> {
                           ),
                           onPressed: () {
                             setState(() {
-                              _civilianCount++;
+                              _totalCount = _civilianCount +
+                                  _mafiaCount +
+                                  _mrWhiteCount +
+                                  _mrBlackCount;
+                              if (_totalCount < 20) {
+                                _civilianCount++;
+                              }
                             });
                           },
                           child: const Icon(Icons.add, color: Colors.black),
