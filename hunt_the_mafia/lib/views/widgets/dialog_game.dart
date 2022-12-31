@@ -74,25 +74,102 @@ class GameDialog {
                 height: 30,
               ),
               SizedBox(
-                  width: 250,
-                  height: 60,
-                  child: TextField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: EdgeInsets.all(16),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0)),
-                      hintText: 'Enter code here!',
-                      hintStyle:
-                          TextStyle(fontSize: 15.0, color: Color(0xFF311A46)),
-                    ),
-                  )),
+                width: 250,
+                height: 60,
+                child: TextField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: EdgeInsets.all(16),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0)),
+                    hintText: 'Enter code here!',
+                    hintStyle:
+                        TextStyle(fontSize: 15.0, color: Color(0xFF311A46)),
+                  ),
+                ),
+              ),
+              SizedSpacer.vertical(space: Space.medium),
+              PrimaryGameButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        GameDialog.joinEnterNicknameDialog(context: context),
+                  );
+                },
+                label: "Enter room",
+                foregroundColor: const Color(0xFF311A46),
+                backgroundColor: Colors.white,
+              )
             ],
           ),
         )),
       ]),
+    );
+  }
+
+  static AlertDialog joinEnterNicknameDialog({required BuildContext context}) {
+    final nicknameController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+
+    return AlertDialog(
+      backgroundColor: const Color(0xFF311A46),
+      content: Wrap(
+        children: [
+          SizedBox(
+            height: 200,
+            width: 330,
+            child: Column(
+              children: [
+                SizedSpacer.vertical(),
+                const Text(
+                  "Enter Nickname",
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontFamily: "Poppins",
+                  ),
+                ),
+                SizedSpacer.vertical(space: Space.large),
+                Form(
+                  key: formKey,
+                  child: TextField(
+                    controller: nicknameController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding: const EdgeInsets.all(Space.medium),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      hintText: "Enter nickname here!",
+                      hintStyle: const TextStyle(
+                        fontSize: 15.0,
+                        color: Color(0xFF311A46),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedSpacer.vertical(space: Space.medium),
+                PrimaryGameButton(
+                  onPressed: (() {
+                    if (formKey.currentState!.validate()) {
+                      Navigator.pop(context);
+                    }
+                  }),
+                  label: "Join Game",
+                  foregroundColor: const Color(0xFF311A46),
+                  backgroundColor: Colors.white,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
