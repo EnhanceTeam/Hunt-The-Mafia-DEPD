@@ -156,7 +156,9 @@ class _PreparationPageState extends State<PreparationPage> {
                           ),
                           onPressed: () {
                             setState(() {
-                              _mrWhiteCount++;
+                              if (_mrWhiteCount < 1) {
+                                _mrWhiteCount++;
+                              }
                             });
                           },
                           child: const Icon(Icons.add, color: Colors.black),
