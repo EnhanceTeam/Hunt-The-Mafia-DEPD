@@ -18,3 +18,4 @@ part 'components/text_field.dart';
 
 part 'card_shop_item.dart';
 part 'waiting_room_player_item.card.dart';
+part 'counter_role.dart';
