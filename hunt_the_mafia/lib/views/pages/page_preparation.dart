@@ -197,7 +197,9 @@ class _PreparationPageState extends State<PreparationPage> {
                           ),
                           onPressed: () {
                             setState(() {
-                              _mrBlackCount++;
+                              if (_mrBlackCount < 1) {
+                                _mrBlackCount++;
+                              }
                             });
                           },
                           child: const Icon(Icons.add, color: Colors.black),
@@ -212,10 +214,14 @@ class _PreparationPageState extends State<PreparationPage> {
                 label: 'Start Game',
                 maxSize: true,
                 onPressed: () {
-                  RoleCountService.addRole(widget.roomId, "civilian_count", _civilianCount);
-                  RoleCountService.addRole(widget.roomId, "mafia_count", _mafiaCount);
-                  RoleCountService.addRole(widget.roomId, "mr_white_count", _mrWhiteCount);
-                  RoleCountService.addRole(widget.roomId, "mr_black_count", _mrBlackCount);
+                  RoleCountService.addRole(
+                      widget.roomId, "civilian_count", _civilianCount);
+                  RoleCountService.addRole(
+                      widget.roomId, "mafia_count", _mafiaCount);
+                  RoleCountService.addRole(
+                      widget.roomId, "mr_white_count", _mrWhiteCount);
+                  RoleCountService.addRole(
+                      widget.roomId, "mr_black_count", _mrBlackCount);
 
                   // todo: navigate to game lobby
                   // Navigator.push(
@@ -226,7 +232,6 @@ class _PreparationPageState extends State<PreparationPage> {
                   //     ),
                   //   ),
                   // );
-
                 },
               )
             ],
