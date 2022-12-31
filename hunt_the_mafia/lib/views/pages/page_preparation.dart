@@ -229,6 +229,10 @@ class _PreparationPageState extends State<PreparationPage> {
                         ),
                       ],
                     ),
+                    SizedSpacer.vertical(space: Space.large),
+                    const Text(
+                      'Note: Total maximum players is 20', style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
                   ],
                 ),
               ),
