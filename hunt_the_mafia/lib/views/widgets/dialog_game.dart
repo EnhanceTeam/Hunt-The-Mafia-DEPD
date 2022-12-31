@@ -41,58 +41,204 @@ class GameDialog {
     );
   }
 
-  static AlertDialog joinDialog({required BuildContext context}) {
+  static AlertDialog joinDialog(
+      {required BuildContext context, bool mounted = true}) {
+    final codeController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+
+    String? validateCode(String? code) {
+      if (code == null || code.isEmpty) {
+        return 'Please enter room code';
+      } else if (code.length != 6) {
+        return 'Room code must be 6 digits';
+      }
+      return null;
+    }
+
     return AlertDialog(
-      backgroundColor: Color(0xFF311A46),
-      content: Wrap(children: [
-        Center(
-            child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20.0),
-            color: Color(0xFF311A46),
-          ),
-          height: 200,
-          width: 330,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Enter Code",
-                    style: TextStyle(
+      backgroundColor: const Color(0xFF311A46),
+      content: Wrap(
+        children: [
+          SizedBox(
+            width: 330,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      "Enter Code",
+                      style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
-                        fontFamily: "Poppins"),
-                  ),
-                ],
-              ),
-              SizedBox(
-                width: 250,
-                height: 30,
-              ),
-              SizedBox(
-                  width: 250,
-                  height: 60,
-                  child: TextField(
+                        fontFamily: "Poppins",
+                      ),
+                    ),
+                  ],
+                ),
+                SizedSpacer.vertical(space: Space.large),
+                Form(
+                  key: formKey,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: TextFormField(
+                    controller: codeController,
                     obscureText: true,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
-                      contentPadding: EdgeInsets.all(16),
+                      contentPadding: const EdgeInsets.all(Space.medium),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0)),
                       hintText: 'Enter code here!',
-                      hintStyle:
-                          TextStyle(fontSize: 15.0, color: Color(0xFF311A46)),
+                      hintStyle: const TextStyle(
+                        fontSize: 15.0,
+                        color: Color(0xFF311A46),
+                      ),
                     ),
-                  )),
-            ],
+                    validator: (value) {
+                      return validateCode(value);
+                    },
+                  ),
+                ),
+                SizedSpacer.vertical(space: Space.medium),
+                PrimaryGameButton(
+                  onPressed: () async {
+                    if (formKey.currentState!.validate()) {
+                      String roomId = codeController.text;
+                      bool isRoomExists =
+                          await JoinRoomService.isRoomExists(roomId);
+                      if (isRoomExists) {
+                        if (!mounted) return;
+                        Navigator.of(context).pop();
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              GameDialog.joinEnterNicknameDialog(
+                                  roomId: roomId, context: context),
+                        );
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: "Room doesn't exist",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
+                      }
+                    }
+                  },
+                  label: "Enter room",
+                  foregroundColor: const Color(0xFF311A46),
+                  backgroundColor: Colors.white,
+                )
+              ],
+            ),
           ),
-        )),
-      ]),
+        ],
+      ),
+    );
+  }
+
+  static AlertDialog joinEnterNicknameDialog({
+    required String roomId,
+    required BuildContext context,
+    bool mounted = true,
+  }) {
+    final nicknameController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+
+    String? validateNickname(String? nickname) {
+      if (nickname == null || nickname.isEmpty) {
+        return 'Please enter a nickname';
+      }
+
+      return null;
+    }
+
+    return AlertDialog(
+      backgroundColor: const Color(0xFF311A46),
+      content: Wrap(
+        children: [
+          SizedBox(
+            width: 330,
+            child: Column(
+              children: [
+                SizedSpacer.vertical(),
+                const Text(
+                  "Enter Nickname",
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontFamily: "Poppins",
+                  ),
+                ),
+                SizedSpacer.vertical(space: Space.large),
+                Form(
+                  key: formKey,
+                  child: TextFormField(
+                    controller: nicknameController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding: const EdgeInsets.all(Space.medium),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      hintText: "Enter nickname here!",
+                      hintStyle: const TextStyle(
+                        fontSize: 15.0,
+                        color: Color(0xFF311A46),
+                      ),
+                    ),
+                    validator: (value) {
+                      return validateNickname(value);
+                    },
+                  ),
+                ),
+                SizedSpacer.vertical(space: Space.medium),
+                PrimaryGameButton(
+                  onPressed: () async {
+                    if (formKey.currentState!.validate()) {
+                      String nickname = nicknameController.text;
+                      bool isNicknameExistsInRoom =
+                          await JoinRoomService.isNicknameExistsInRoom(
+                              roomId, nickname);
+                      if (!isNicknameExistsInRoom) {
+                        if (!mounted) return;
+                        Navigator.of(context).pop();
+                        Navigator.pushNamed(
+                          context,
+                          GameRoomPage.routeName,
+                          arguments: GameRoomPageArguments(roomId, nickname),
+                        );
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: "Nickname already exists",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
+                      }
+                    }
+                  },
+                  label: "Join Game",
+                  foregroundColor: const Color(0xFF311A46),
+                  backgroundColor: Colors.white,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
