@@ -122,7 +122,11 @@ class _PreparationPageState extends State<PreparationPage> {
                           ),
                           onPressed: () {
                             setState(() {
-                              if (_mafiaCount < (_civilianCount - 3)) {
+                              _totalCount = _civilianCount +
+                                  _mafiaCount +
+                                  _mrWhiteCount +
+                                  _mrBlackCount;
+                              if (_mafiaCount < (_civilianCount - 3) && _totalCount < 20) {
                                 _mafiaCount++;
                               }
                             });
@@ -165,7 +169,11 @@ class _PreparationPageState extends State<PreparationPage> {
                           ),
                           onPressed: () {
                             setState(() {
-                              if (_mrWhiteCount < 1) {
+                              _totalCount = _civilianCount +
+                                  _mafiaCount +
+                                  _mrWhiteCount +
+                                  _mrBlackCount;
+                              if (_mrWhiteCount < 1 && _totalCount < 20) {
                                 _mrWhiteCount++;
                               }
                             });
@@ -208,7 +216,11 @@ class _PreparationPageState extends State<PreparationPage> {
                           ),
                           onPressed: () {
                             setState(() {
-                              if (_mrBlackCount < 1) {
+                              _totalCount = _civilianCount +
+                                  _mafiaCount +
+                                  _mrWhiteCount +
+                                  _mrBlackCount;
+                              if (_mrBlackCount < 1 && _totalCount < 20) {
                                 _mrBlackCount++;
                               }
                             });
