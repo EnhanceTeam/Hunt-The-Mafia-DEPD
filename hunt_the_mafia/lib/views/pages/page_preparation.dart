@@ -115,7 +115,9 @@ class _PreparationPageState extends State<PreparationPage> {
                           ),
                           onPressed: () {
                             setState(() {
-                              _mafiaCount++;
+                              if (_mafiaCount < (_civilianCount - 3)) {
+                                _mafiaCount++;
+                              }
                             });
                           },
                           child: const Icon(Icons.add, color: Colors.black),
