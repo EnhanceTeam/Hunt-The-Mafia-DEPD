@@ -263,7 +263,16 @@ class GameDialog {
                     } else {
                       CreateRoomService.addRooms(ctrlNickname.text.trim())
                           .then((value) => {
-                                // todo: Navigate to room page
+                                // Navigate to preparation page
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: ((context) => PreparationPage(
+                                          roomId: CreateRoomService
+                                              .getCurrentRoomId(),
+                                        )),
+                                  ),
+                                )
                               })
                           .catchError((error) => {
                                 Fluttertoast.showToast(
@@ -318,9 +327,12 @@ class GameDialog {
                   ],
                 ),
                 SizedSpacer.vertical(space: Space.medium),
-                const Text('Your secret word is:', style: TextStyle(fontSize: 14, color: Colors.black54)),
+                const Text('Your secret word is:',
+                    style: TextStyle(fontSize: 14, color: Colors.black54)),
                 SizedSpacer.vertical(space: Space.medium),
-                const Text('Sandals', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                const Text('Sandals',
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ],
             ),
           ),
