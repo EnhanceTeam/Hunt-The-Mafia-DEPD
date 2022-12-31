@@ -1,16 +1,7 @@
 part of 'services.dart';
 
-class JoinRoomService {
-  static Future<bool> isRoomExists(String roomId) async {
-    CollectionReference roomsCollectionReference =
-        FirebaseFirestore.instance.collection("rooms");
-    DocumentSnapshot roomDoc = await roomsCollectionReference.doc(roomId).get();
-
-    return roomDoc.exists;
-  }
-
-  static Future<bool> isNicknameExistsInRoom(
-      String roomId, String nickname) async {
+class GameRoomServie {
+  static Future<bool> removePlayer(String roomId, String nickname) async {
     CollectionReference roomsCollectionReference =
         FirebaseFirestore.instance.collection("rooms");
     DocumentReference roomDocRef = roomsCollectionReference.doc(roomId);
@@ -23,14 +14,14 @@ class JoinRoomService {
           roomDocSnapshot.data() as Map<String, dynamic>;
       List<dynamic> playerNicknames = data[playerNicknamesField] ?? [];
 
-      if (!playerNicknames.contains(nickname)) {
+      if (playerNicknames.contains(nickname)) {
         roomDocRef.update({
-          playerNicknamesField: FieldValue.arrayUnion([nickname]),
+          playerNicknamesField: FieldValue.arrayRemove([nickname]),
         });
-        return false;
+        return true;
       }
     }
 
-    return true;
+    return false;
   }
 }

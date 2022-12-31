@@ -212,7 +212,11 @@ class GameDialog {
                       if (!isNicknameExistsInRoom) {
                         if (!mounted) return;
                         Navigator.of(context).pop();
-                        Navigator.of(context).pushNamed(GameRoomPage.routeName);
+                        Navigator.pushNamed(
+                          context,
+                          GameRoomPage.routeName,
+                          arguments: GameRoomPageArguments(roomId, nickname),
+                        );
                       } else {
                         Fluttertoast.showToast(
                           msg: "Nickname already exists",
