@@ -2,21 +2,19 @@ part of 'services.dart';
 
 class GameRoomService {
   static Future<bool> isPlayerHost(String roomId, String nickname) async {
-    CollectionReference roomsColRef = FirebaseFirestore.instance
-        .collection("rooms")
-        .doc(roomId)
-        .collection("players");
-    QuerySnapshot playerDocRef = await roomsColRef.get();
+    CollectionReference roomsColRef =
+        FirebaseFirestore.instance.collection("rooms");
+    DocumentSnapshot roomDocRef = await roomsColRef.doc(roomId).get();
 
-    List<String> playerNicknames = playerDocRef.docs.map((doc) {
-      return doc.id;
-    }).toList();
-
-    if (playerNicknames.contains(nickname)) {
-      return false;
+    if (roomDocRef.exists) {
+      Map<String, dynamic> data = roomDocRef.data() as Map<String, dynamic>;
+      String hostname = data["hostname"];
+      if (hostname.toLowerCase() == nickname.toLowerCase()) {
+        return true;
+      }
     }
 
-    return true;
+    return false;
   }
 
   static Future<bool> removeRoom(String roomId) async {
