@@ -93,6 +93,12 @@ class _DummyPageState extends State<DummyPage> {
                       );
                     },
                     child: const Text("Winner PopUp")),
+                SizedSpacer.vertical(),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, GuidePage.routeName);
+                    },
+                    child: const Text("Guide")),
               ],
             ),
           ),
