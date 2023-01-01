@@ -63,6 +63,9 @@ class _PreparationPageState extends State<PreparationPage> {
                               if (_civilianCount > 2) {
                                 _civilianCount--;
                               }
+                              if (_mafiaCount > (_civilianCount - 3)) {
+                                _mafiaCount--;
+                              }
                             });
                           },
                           child: const Icon(Icons.remove, color: Colors.black),
