@@ -41,7 +41,7 @@ class _GamePageState extends State<GamePage> {
               style: TextStyle(fontSize: 32),
             ),
             Text(
-              "N13031",
+              args.roomId,
               style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
             ),
             SizedBox(

@@ -47,14 +47,16 @@ class _GameRoomPageState extends State<GameRoomPage> {
             children: [
               Column(
                 children: [
-                  Text(
+                  const Text(
                     'Room Code',
-                    style: Theme.of(context).textTheme.headlineMedium,
+                    style: TextStyle(fontSize: 32),
                   ),
-                  SizedSpacer.vertical(space: Space.small),
                   Text(
-                    'N1310',
-                    style: Theme.of(context).textTheme.titleLarge,
+                    args.roomId,
+                    style: const TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ],
               ),
@@ -145,10 +147,12 @@ class _GameRoomPageState extends State<GameRoomPage> {
                           ? () {
                               Navigator.pushNamedAndRemoveUntil(
                                 context,
-                                GamePage.routeName,
+                                PreparationPage.routeName,
                                 (route) => false,
-                                arguments: GamePageArguments(
-                                    args.roomId, args.nickname),
+                                arguments: PreparationPageArguments(
+                                  args.roomId,
+                                  args.nickname,
+                                ),
                               );
                             }
                           : null,
