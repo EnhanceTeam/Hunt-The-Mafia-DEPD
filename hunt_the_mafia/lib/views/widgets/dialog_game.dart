@@ -205,7 +205,7 @@ class GameDialog {
                 PrimaryGameButton(
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
-                      String nickname = nicknameController.text;
+                      String nickname = nicknameController.text.trim();
                       bool isNicknameExistsInRoom =
                           await JoinRoomService.isNicknameExistsInRoom(
                               roomId, nickname);
@@ -408,18 +408,19 @@ class GameDialog {
                           fontSize: 16.0);
                     } else {
                       CreateRoomService.addRooms(ctrlNickname.text.trim())
-                          .then((value) => {
-                                // Navigate to preparation page
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: ((context) => PreparationPage(
-                                          roomId: CreateRoomService
-                                              .getCurrentRoomId(),
-                                        )),
-                                  ),
-                                )
-                              })
+                          .then(
+                            (value) => {
+                              // Navigate to preparation page
+                              Navigator.pushNamed(
+                                context,
+                                PreparationPage.routeName,
+                                arguments: PreparationPageArguments(
+                                  CreateRoomService.getCurrentRoomId(),
+                                  ctrlNickname.text.trim(),
+                                ),
+                              ),
+                            },
+                          )
                           .catchError((error) => {
                                 Fluttertoast.showToast(
                                     msg: "Error: $error",
