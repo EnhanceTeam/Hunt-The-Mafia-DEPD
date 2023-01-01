@@ -1,11 +1,9 @@
 part of 'pages.dart';
 
 class PreparationPage extends StatefulWidget {
-  const PreparationPage({Key? key, required this.roomId}) : super(key: key);
+  const PreparationPage({super.key});
 
   static const String routeName = "/preparation";
-
-  final String roomId;
 
   @override
   State<PreparationPage> createState() => _PreparationPageState();
@@ -20,6 +18,9 @@ class _PreparationPageState extends State<PreparationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)!.settings.arguments as PreparationPageArguments;
+
     return Scaffold(
       body: SafeArea(
         minimum: const EdgeInsets.all(Space.large),
@@ -38,7 +39,7 @@ class _PreparationPageState extends State<PreparationPage> {
                     ),
                     SizedSpacer.vertical(space: Space.medium),
                     Text(
-                      widget.roomId,
+                      args.roomId,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ],
@@ -62,6 +63,10 @@ class _PreparationPageState extends State<PreparationPage> {
                             setState(() {
                               if (_civilianCount > 2) {
                                 _civilianCount--;
+                              }
+                              if (_mafiaCount > (_civilianCount - 3) &&
+                                  _mafiaCount > 1) {
+                                _mafiaCount--;
                               }
                             });
                           },
@@ -244,23 +249,23 @@ class _PreparationPageState extends State<PreparationPage> {
                 maxSize: true,
                 onPressed: () {
                   RoleCountService.addRole(
-                      widget.roomId, "civilian_count", _civilianCount);
+                      args.roomId, "civilian_count", _civilianCount);
                   RoleCountService.addRole(
-                      widget.roomId, "mafia_count", _mafiaCount);
+                      args.roomId, "mafia_count", _mafiaCount);
                   RoleCountService.addRole(
-                      widget.roomId, "mr_white_count", _mrWhiteCount);
+                      args.roomId, "mr_white_count", _mrWhiteCount);
                   RoleCountService.addRole(
-                      widget.roomId, "mr_black_count", _mrBlackCount);
+                      args.roomId, "mr_black_count", _mrBlackCount);
 
-                  // todo: navigate to game lobby
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => GameRoomPage(
-                  //       roomId: widget.roomId,
-                  //     ),
-                  //   ),
-                  // );
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    GamePage.routeName,
+                    (route) => false,
+                    arguments: GamePageArguments(
+                      args.roomId,
+                      args.nickname,
+                    ),
+                  );
                 },
               )
             ],
@@ -269,4 +274,14 @@ class _PreparationPageState extends State<PreparationPage> {
       ),
     );
   }
+}
+
+class PreparationPageArguments {
+  final String roomId;
+  final String nickname;
+
+  PreparationPageArguments(
+    this.roomId,
+    this.nickname,
+  );
 }
