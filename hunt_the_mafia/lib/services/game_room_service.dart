@@ -32,11 +32,11 @@ class GameRoomService {
   }
 
   static Future<bool> removePlayer(String roomId, String nickname) async {
-    CollectionReference roomsColRef = FirebaseFirestore.instance
+    CollectionReference playerColRef = FirebaseFirestore.instance
         .collection("rooms")
         .doc(roomId)
         .collection("players");
-    DocumentReference playerDocRef = roomsColRef.doc(nickname);
+    DocumentReference playerDocRef = playerColRef.doc(nickname);
 
     playerDocRef.delete().then((value) {
       return true;
