@@ -126,7 +126,8 @@ class _PreparationPageState extends State<PreparationPage> {
                                   _mafiaCount +
                                   _mrWhiteCount +
                                   _mrBlackCount;
-                              if (_mafiaCount < (_civilianCount - 3) && _totalCount < 20) {
+                              if (_mafiaCount < (_civilianCount - 3) &&
+                                  _totalCount < 20) {
                                 _mafiaCount++;
                               }
                             });
@@ -231,7 +232,8 @@ class _PreparationPageState extends State<PreparationPage> {
                     ),
                     SizedSpacer.vertical(space: Space.large),
                     const Text(
-                      'Note: Total maximum players is 20', style: TextStyle(fontStyle: FontStyle.italic),
+                      'Note: Total maximum players is 20',
+                      style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ],
                 ),
@@ -254,7 +256,7 @@ class _PreparationPageState extends State<PreparationPage> {
                   // Navigator.push(
                   //   context,
                   //   MaterialPageRoute(
-                  //     builder: (context) => GameScreen(
+                  //     builder: (context) => GameRoomPage(
                   //       roomId: widget.roomId,
                   //     ),
                   //   ),

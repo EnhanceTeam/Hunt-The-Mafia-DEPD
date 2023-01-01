@@ -28,14 +28,14 @@ class MyApp extends StatelessWidget {
         theme: MyTheme.lightTheme(lightColorScheme),
         darkTheme: MyTheme.darkTheme(darkColorScheme),
         navigatorKey: GlobalContextService.navigatorKey,
-        initialRoute: MainMenuPage.routeName,
+        initialRoute: DummyPage.routeName,
         routes: {
           DummyPage.routeName: (context) => const DummyPage(),
           MainMenuPage.routeName: (context) => const MainMenuPage(),
           ShopPage.routeName: (context) => const ShopPage(),
           // PreparationPage.routeName: (context) => const PreparationPage(),
           GameRoomPage.routeName: (context) => const GameRoomPage(),
-          GamePage.routeName: (context) => const GamePage(),
+          // GamePage.routeName: (context) => const GamePage(),
           SettingPage.routeName: (context) => const SettingPage(),
         },
       );
