@@ -27,27 +27,16 @@ class JoinRoomService {
         .collection("rooms")
         .doc(roomId)
         .collection("players");
-    DocumentReference roomDocRef = roomsColRef.doc(nickname);
-    DocumentSnapshot roomDocSnapshot = await roomDocRef.get();
+    DocumentReference playerDocRef = roomsColRef.doc(nickname);
+    DocumentSnapshot playerDocSnapshot = await playerDocRef.get();
 
-    debugPrint(roomDocSnapshot.exists.toString());
     // Nickname exists
-    if (roomDocSnapshot.exists) {
+    if (playerDocSnapshot.exists) {
       return true;
-      // Map<String, dynamic> data =
-      //     roomDocSnapshot.data() as Map<String, dynamic>;
-      // List<dynamic> playerNicknames = data[playerNicknamesField] ?? [];
-
-      // if (!playerNicknames.contains(nickname)) {
-      //   roomDocRef.update({
-      //     playerNicknamesField: FieldValue.arrayUnion([nickname]),
-      //   });
-      //   return false;
-      // }
     }
 
     // Nickname doesn't exist
-    roomDocRef.set({"role": null});
+    playerDocRef.set({"role": null});
     return false;
   }
 }

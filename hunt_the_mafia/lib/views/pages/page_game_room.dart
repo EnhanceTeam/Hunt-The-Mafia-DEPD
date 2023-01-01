@@ -31,7 +31,7 @@ class _GameRoomPageState extends State<GameRoomPage> {
             await GameRoomService.isPlayerHost(args.roomId, args.nickname);
 
         if (!isPlayerHost) {
-          GameRoomService.removePlayer(args.roomId, args.nickname);
+          await GameRoomService.removePlayer(args.roomId, args.nickname);
         }
 
         if (!mounted) return Future.value(false);
