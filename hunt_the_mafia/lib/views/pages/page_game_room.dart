@@ -69,19 +69,20 @@ class _GameRoomPageState extends State<GameRoomPage> {
                       borderRadius:
                           BorderRadius.circular(Shape.roundedRectangle)),
                   child: SingleChildScrollView(
-                    child:
-                        StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                    child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                       stream: FirebaseFirestore.instance
                           .collection("rooms")
                           .doc(args.roomId)
+                          .collection("players")
                           .snapshots(),
                       builder: (_, snapshot) {
                         if (snapshot.hasError) {
                           return Text('Error = ${snapshot.error}');
                         } else if (snapshot.hasData) {
-                          var data = snapshot.data!.data();
-                          var hostname = data!['hostname'];
-                          var playerNicknames = data['playerNicknames'] ?? [];
+                          var data = snapshot.data!.docs;
+                          var playerNicknames = data.map((doc) {
+                            return doc.id;
+                          }).toList();
 
                           return Column(
                             children: [
@@ -93,7 +94,7 @@ class _GameRoomPageState extends State<GameRoomPage> {
                                 itemBuilder: ((context, index) {
                                   if (index == 0) {
                                     return WaitingRoomPlayerItemCard(
-                                      playerName: hostname,
+                                      playerName: args.hostname,
                                       isHost: true,
                                     );
                                   }
@@ -127,17 +128,20 @@ class _GameRoomPageState extends State<GameRoomPage> {
                 ),
               ),
               SizedSpacer.vertical(space: Space.medium),
-              StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+              StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                 stream: FirebaseFirestore.instance
                     .collection("rooms")
                     .doc(args.roomId)
+                    .collection("players")
                     .snapshots(),
                 builder: (_, snapshot) {
                   if (snapshot.hasError) {
                     return Text('Error = ${snapshot.error}');
                   } else if (snapshot.hasData) {
-                    var data = snapshot.data!.data();
-                    var playerNicknames = data!['playerNicknames'] ?? [];
+                    var data = snapshot.data!.docs;
+                    var playerNicknames = data.map((doc) {
+                      return doc.id;
+                    }).toList();
                     bool isPlayerEnough = playerNicknames.length > 1;
 
                     return PrimaryGameButton(
@@ -174,10 +178,12 @@ class _GameRoomPageState extends State<GameRoomPage> {
 
 class GameRoomPageArguments {
   final String roomId;
+  final String hostname;
   final String nickname;
 
   GameRoomPageArguments(
     this.roomId,
+    this.hostname,
     this.nickname,
   );
 }

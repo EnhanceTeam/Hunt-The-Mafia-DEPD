@@ -210,12 +210,18 @@ class GameDialog {
                           await JoinRoomService.isNicknameExistsInRoom(
                               roomId, nickname);
                       if (!isNicknameExistsInRoom) {
+                        String hostname =
+                            await JoinRoomService.getHostname(roomId);
                         if (!mounted) return;
                         Navigator.of(context).pop();
                         Navigator.pushNamed(
                           context,
                           GameRoomPage.routeName,
-                          arguments: GameRoomPageArguments(roomId, nickname),
+                          arguments: GameRoomPageArguments(
+                            roomId,
+                            hostname,
+                            nickname,
+                          ),
                         );
                       } else {
                         Fluttertoast.showToast(
