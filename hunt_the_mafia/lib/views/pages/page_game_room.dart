@@ -80,9 +80,10 @@ class _GameRoomPageState extends State<GameRoomPage> {
                           return Text('Error = ${snapshot.error}');
                         } else if (snapshot.hasData) {
                           var data = snapshot.data!.docs;
-                          var playerNicknames = data.map((doc) {
-                            return doc.id;
-                          }).toList();
+                          var playerNicknames = data
+                              .map((doc) => doc.id)
+                              .where((nickname) => nickname != args.hostname)
+                              .toList();
 
                           return Column(
                             children: [

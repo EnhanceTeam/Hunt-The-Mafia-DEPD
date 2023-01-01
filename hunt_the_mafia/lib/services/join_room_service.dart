@@ -23,11 +23,11 @@ class JoinRoomService {
 
   static Future<bool> isNicknameExistsInRoom(
       String roomId, String nickname) async {
-    CollectionReference roomsColRef = FirebaseFirestore.instance
+    CollectionReference playerColRef = FirebaseFirestore.instance
         .collection("rooms")
         .doc(roomId)
         .collection("players");
-    DocumentReference playerDocRef = roomsColRef.doc(nickname);
+    DocumentReference playerDocRef = playerColRef.doc(nickname);
     DocumentSnapshot playerDocSnapshot = await playerDocRef.get();
 
     // Nickname exists
