@@ -261,20 +261,8 @@ class GameDialog {
                           textColor: Colors.white,
                           fontSize: 16.0);
                     } else {
-                      CreateRoomService.addRooms(ctrlNickname.text.trim())
-                          .then((value) => {
-                                // todo: Navigate to room page
-                              })
-                          .catchError((error) => {
-                                Fluttertoast.showToast(
-                                    msg: "Error: $error",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.red,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0)
-                              });
+                      CreateRoomService.addRooms(
+                          ctrlNickname.text.trim(), context);
                     }
                   }),
                   child: const Text(
