@@ -3,9 +3,9 @@ part of 'widgets.dart';
 class GameDialog {
   static AlertDialog guessDialog({required BuildContext context}) {
     return AlertDialog(
-      title: const Text("Kamu adalah Mr. White. Silahkan tebak kata"),
+      title: const Text("You are Mr. White. Guess the word"),
       content: const TextField(
-        decoration: InputDecoration(hintText: "Tuliskan tebakanmu disini..."),
+        decoration: InputDecoration(hintText: "Guess here..."),
       ),
       actions: [
         TextButton(
@@ -25,8 +25,8 @@ class GameDialog {
           child: Column(
             children: [
               Lottie.asset("assets/lottie/champion.json", width: 200),
-              Text("Semua mafia telah dikalahkan."),
-              Text(" Tim Civillian menang!"),
+              Text("All Mafias have been defeated"),
+              Text("Civillians win!"),
             ],
           ),
         ),
@@ -413,30 +413,8 @@ class GameDialog {
                           textColor: Colors.white,
                           fontSize: 16.0);
                     } else {
-                      CreateRoomService.addRooms(ctrlNickname.text.trim())
-                          .then(
-                            (value) => {
-                              // Navigate to preparation page
-                              Navigator.pushNamed(
-                                context,
-                                PreparationPage.routeName,
-                                arguments: PreparationPageArguments(
-                                  CreateRoomService.getCurrentRoomId(),
-                                  ctrlNickname.text.trim(),
-                                ),
-                              ),
-                            },
-                          )
-                          .catchError((error) => {
-                                Fluttertoast.showToast(
-                                    msg: "Error: $error",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.red,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0)
-                              });
+                      CreateRoomService.addRooms(
+                          ctrlNickname.text.trim(), context);
                     }
                   }),
                   child: const Text(

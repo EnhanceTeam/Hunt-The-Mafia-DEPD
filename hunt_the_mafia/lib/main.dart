@@ -35,8 +35,20 @@ class MyApp extends StatelessWidget {
           ShopPage.routeName: (context) => const ShopPage(),
           PreparationPage.routeName: (context) => const PreparationPage(),
           GameRoomPage.routeName: (context) => const GameRoomPage(),
+<<<<<<< Updated upstream
+          GamePage.routeName: (context) => const GamePage(),
+<<<<<<< HEAD
+||||||| constructed merge base
+          // GamePage.routeName: (context) => const GamePage(),
+          SettingPage.routeName: (context) => const SettingPage(),
+=======
           GamePage.routeName: (context) => const GamePage(),
           SettingPage.routeName: (context) => const SettingPage(),
+>>>>>>> Stashed changes
+||||||| 240d3a6
+=======
+          SettingPage.routeName: (context) => const SettingPage(),
+>>>>>>> main
         },
       );
     });
