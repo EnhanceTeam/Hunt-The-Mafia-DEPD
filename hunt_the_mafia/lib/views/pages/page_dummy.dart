@@ -33,6 +33,13 @@ class _DummyPageState extends State<DummyPage> {
                 SizedSpacer.vertical(),
                 ElevatedButton(
                   onPressed: () {
+                    Navigator.pushNamed(context, PreparationPage.routeName);
+                  },
+                  child: const Text("Preparation Page"),
+                ),
+                SizedSpacer.vertical(),
+                ElevatedButton(
+                  onPressed: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) =>
@@ -93,6 +100,16 @@ class _DummyPageState extends State<DummyPage> {
                       );
                     },
                     child: const Text("Winner PopUp")),
+                SizedSpacer.vertical(),
+                ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            GameDialog.roleDialog(context: context),
+                      );
+                    },
+                    child: const Text("Role&Word PopUp")),
               ],
             ),
           ),

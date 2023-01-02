@@ -15,7 +15,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
       body: Center(
           child: Stack(children: [
         Container(
-          decoration: BoxDecoration(color: Colors.white),
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
           alignment: Alignment.center,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -38,7 +38,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                 },
                 splashColor: Color.fromARGB(255, 255, 183, 0),
                 elevation: 2.0,
-                fillColor: Color.fromARGB(255, 49, 26, 70),
+                fillColor: Const.baseColor,
                 child: Icon(
                   Icons.play_arrow,
                   size: 100,
@@ -58,28 +58,38 @@ class _MainMenuPageState extends State<MainMenuPage> {
             ],
           ),
         ),
-        Column(
-          children: [
-            SizedBox(height: 50),
-            Container(
-              alignment: Alignment.topCenter,
-              width: double.infinity,
-              padding: EdgeInsets.all(12),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.language,
-                    size: 45,
-                  ),
-                  SizedBox(width: MediaQuery.of(context).size.width * 0.65),
-                  Icon(
-                    Icons.settings,
-                    size: 45,
-                  )
-                ],
+        Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 50),
+              Container(
+                alignment: Alignment.topCenter,
+                width: double.infinity,
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.language,
+                      color: Const.baseColor,
+                      size: 45,
+                    ),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.60),
+                    RawMaterialButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, SettingPage.routeName);
+                      },
+                      child: const Icon(
+                        Icons.settings,
+                        color: Const.baseColor,
+                        size: 45,
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ])),
       floatingActionButton: Container(
@@ -88,8 +98,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
         child: FittedBox(
           child: FloatingActionButton(
               elevation: 8,
-              backgroundColor: Color.fromARGB(255, 49, 26, 70),
-              splashColor: Color.fromARGB(255, 255, 183, 0),
+              backgroundColor: Const.baseColor,
               onPressed: () {},
               child: Icon(
                 Icons.shopping_cart,

@@ -23,19 +23,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
       return MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Hunt The Mafia',
         debugShowCheckedModeBanner: false,
         theme: MyTheme.lightTheme(lightColorScheme),
         darkTheme: MyTheme.darkTheme(darkColorScheme),
         navigatorKey: GlobalContextService.navigatorKey,
-        initialRoute: DummyPage.routeName,
+        initialRoute: MainMenuPage.routeName,
         routes: {
           DummyPage.routeName: (context) => const DummyPage(),
           MainMenuPage.routeName: (context) => const MainMenuPage(),
           ShopPage.routeName: (context) => const ShopPage(),
+          PreparationPage.routeName: (context) => const PreparationPage(),
           GameRoomPage.routeName: (context) => const GameRoomPage(),
 <<<<<<< Updated upstream
           GamePage.routeName: (context) => const GamePage(),
+<<<<<<< HEAD
 ||||||| constructed merge base
           // GamePage.routeName: (context) => const GamePage(),
           SettingPage.routeName: (context) => const SettingPage(),
@@ -43,6 +45,10 @@ class MyApp extends StatelessWidget {
           GamePage.routeName: (context) => const GamePage(),
           SettingPage.routeName: (context) => const SettingPage(),
 >>>>>>> Stashed changes
+||||||| 240d3a6
+=======
+          SettingPage.routeName: (context) => const SettingPage(),
+>>>>>>> main
         },
       );
     });

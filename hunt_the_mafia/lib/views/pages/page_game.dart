@@ -12,6 +12,9 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage> {
   @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)!.settings.arguments as GamePageArguments;
+
     return Scaffold(
         body: SafeArea(
       child: Container(
@@ -38,7 +41,7 @@ class _GamePageState extends State<GamePage> {
               style: TextStyle(fontSize: 32),
             ),
             Text(
-              "N13031",
+              args.roomId,
               style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
             ),
             SizedBox(
@@ -251,4 +254,14 @@ class _GamePageState extends State<GamePage> {
       ),
     ));
   }
+}
+
+class GamePageArguments {
+  final String roomId;
+  final String nickname;
+
+  GamePageArguments(
+    this.roomId,
+    this.nickname,
+  );
 }

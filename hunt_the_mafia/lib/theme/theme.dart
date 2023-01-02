@@ -6,8 +6,10 @@ class MyTheme {
   static ThemeData lightTheme(ColorScheme? lightColorScheme) {
     ColorScheme scheme = lightColorScheme ??
         ColorScheme.fromSeed(
-          seedColor: Const.baseColor,
-        );
+            seedColor: Const.baseColor,
+            background: Const.whtColor,
+            secondary: Const.accentColor,
+            brightness: Brightness.light);
     return ThemeData(
       useMaterial3: true,
       colorScheme: scheme,
