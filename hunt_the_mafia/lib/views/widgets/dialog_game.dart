@@ -349,7 +349,7 @@ class GameDialog {
             children: [
               SizedBox(
                 width: 250,
-                height: 60,
+                height: 75,
                 child: Form(
                     child: TextFormField(
                   key: _formKey,

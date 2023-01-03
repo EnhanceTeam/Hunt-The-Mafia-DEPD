@@ -27,12 +27,33 @@ class _GameRoomPageState extends State<GameRoomPage> {
 
     return WillPopScope(
       onWillPop: () async {
-        bool isPlayerHost =
-            await GameRoomService.isPlayerHost(args.roomId, args.nickname);
+        // bool isPlayerHost =
+        //     await GameRoomService.isPlayerHost(args.roomId, args.nickname);
 
-        if (!isPlayerHost) {
-          await GameRoomService.removePlayer(args.roomId, args.nickname);
-        }
+        // if (!isPlayerHost) {
+
+        await GameRoomService.removePlayer(args.roomId, args.nickname);
+
+        await FirebaseFirestore.instance
+            .collection("rooms")
+            .doc(args.roomId)
+            .collection("players")
+            .get()
+            .then((value) {
+          if (value.docs.isEmpty) {
+            FirebaseFirestore.instance
+                .collection("rooms")
+                .doc(args.roomId)
+                .delete();
+          } else {
+            FirebaseFirestore.instance
+                .collection("rooms")
+                .doc(args.roomId)
+                .update({"hostname": value.docs[0].id});
+          }
+        });
+
+        // }
 
         if (!mounted) return Future.value(false);
         Navigator.pop(context, false);
@@ -106,7 +127,7 @@ class _GameRoomPageState extends State<GameRoomPage> {
                                 }),
                               ),
                               SizedSpacer.vertical(space: Space.medium),
-                              if (playerNicknames.length < 2) ...[
+                              if (playerNicknames.length < 3) ...[
                                 Text(
                                   'Waiting for players...',
                                   style: TextStyle(
@@ -143,7 +164,7 @@ class _GameRoomPageState extends State<GameRoomPage> {
                     var playerNicknames = data.map((doc) {
                       return doc.id;
                     }).toList();
-                    bool isPlayerEnough = playerNicknames.length > 1;
+                    bool isPlayerEnough = playerNicknames.length > 2;
 
                     return PrimaryGameButton(
                       label: 'Start Game',
@@ -172,7 +193,7 @@ class _GameRoomPageState extends State<GameRoomPage> {
               ),
               SizedSpacer.vertical(space: Space.large),
               const Text(
-                'Note: Total maximum players is 20',
+                'Note: Max players is 20 and min players is 3',
                 style: TextStyle(fontStyle: FontStyle.italic),
               ),
             ],

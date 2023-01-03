@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         theme: MyTheme.lightTheme(lightColorScheme),
         darkTheme: MyTheme.darkTheme(darkColorScheme),
         navigatorKey: GlobalContextService.navigatorKey,
-        initialRoute: MainMenuPage.routeName,
+        initialRoute: DummyPage.routeName,
         routes: {
           DummyPage.routeName: (context) => const DummyPage(),
           MainMenuPage.routeName: (context) => const MainMenuPage(),
