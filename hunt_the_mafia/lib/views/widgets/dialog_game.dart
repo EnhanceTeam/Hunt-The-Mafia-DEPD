@@ -219,8 +219,8 @@ class GameDialog {
                           GameRoomPage.routeName,
                           arguments: GameRoomPageArguments(
                             roomId,
-                            hostname,
                             nickname,
+                            // nickname,
                           ),
                         );
                       } else {

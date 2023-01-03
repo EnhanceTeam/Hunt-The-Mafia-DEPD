@@ -90,106 +90,129 @@ class _GameRoomPageState extends State<GameRoomPage> {
                       borderRadius:
                           BorderRadius.circular(Shape.roundedRectangle)),
                   child: SingleChildScrollView(
-                    child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                    child:
+                        StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                       stream: FirebaseFirestore.instance
                           .collection("rooms")
                           .doc(args.roomId)
-                          .collection("players")
                           .snapshots(),
-                      builder: (_, snapshot) {
-                        if (snapshot.hasError) {
-                          return Text('Error = ${snapshot.error}');
-                        } else if (snapshot.hasData) {
-                          var data = snapshot.data!.docs;
-                          var playerNicknames = data
-                              .map((doc) => doc.id)
-                              .where((nickname) => nickname != args.hostname)
-                              .toList();
+                      builder: (_, snapshotHost) =>
+                          StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                        stream: FirebaseFirestore.instance
+                            .collection("rooms")
+                            .doc(args.roomId)
+                            .collection("players")
+                            .snapshots(),
+                        builder: (_, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error = ${snapshot.error}');
+                          } else if (snapshot.hasData) {
+                            var hostname = snapshotHost.data!.get("hostname");
+                            var data = snapshot.data!.docs;
+                            var playerNicknames = data
+                                .map((doc) => doc.id)
+                                .where((nickname) => nickname != hostname)
+                                .toList();
 
-                          return Column(
-                            children: [
-                              SizedSpacer.vertical(space: Space.small),
-                              ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: playerNicknames.length + 1,
-                                itemBuilder: ((context, index) {
-                                  if (index == 0) {
+                            return Column(
+                              children: [
+                                SizedSpacer.vertical(space: Space.small),
+                                ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: playerNicknames.length + 1,
+                                  itemBuilder: ((context, index) {
+                                    if (index == 0) {
+                                      return WaitingRoomPlayerItemCard(
+                                        playerName: hostname,
+                                        isHost: true,
+                                      );
+                                    }
+
                                     return WaitingRoomPlayerItemCard(
-                                      playerName: args.hostname,
-                                      isHost: true,
+                                      playerName: playerNicknames[index - 1],
                                     );
-                                  }
-
-                                  return WaitingRoomPlayerItemCard(
-                                    playerName: playerNicknames[index - 1],
-                                  );
-                                }),
-                              ),
-                              SizedSpacer.vertical(space: Space.medium),
-                              if (playerNicknames.length < 3) ...[
-                                Text(
-                                  'Waiting for players...',
-                                  style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.onPrimary,
-                                  ),
+                                  }),
                                 ),
-                                SizedSpacer.vertical(space: Space.small)
+                                SizedSpacer.vertical(space: Space.medium),
+                                if (playerNicknames.length < 3) ...[
+                                  Text(
+                                    'Waiting for players...',
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                    ),
+                                  ),
+                                  SizedSpacer.vertical(space: Space.small)
+                                ],
                               ],
-                            ],
-                          );
-                        } else {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                      },
+                            );
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        },
+                      ),
                     ),
                   ),
                 ),
               ),
               SizedSpacer.vertical(space: Space.medium),
-              StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                 stream: FirebaseFirestore.instance
                     .collection("rooms")
                     .doc(args.roomId)
-                    .collection("players")
                     .snapshots(),
-                builder: (_, snapshot) {
-                  if (snapshot.hasError) {
-                    return Text('Error = ${snapshot.error}');
-                  } else if (snapshot.hasData) {
-                    var data = snapshot.data!.docs;
-                    var playerNicknames = data.map((doc) {
-                      return doc.id;
-                    }).toList();
-                    bool isPlayerEnough = playerNicknames.length > 2;
+                builder: (_, snapshotHost) =>
+                    StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                  stream: FirebaseFirestore.instance
+                      .collection("rooms")
+                      .doc(args.roomId)
+                      .collection("players")
+                      .snapshots(),
+                  builder: (_, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error = ${snapshot.error}');
+                    } else if (snapshot.hasData) {
+                      var hostname =
+                          snapshot.data!.docs[0].id; // todo: fix this;
+                      var data = snapshot.data!.docs;
+                      var playerNicknames = data.map((doc) {
+                        return doc.id;
+                      }).toList();
+                      bool isPlayerEnough = playerNicknames.length > 2;
 
-                    return PrimaryGameButton(
-                      label: 'Start Game',
-                      maxSize: true,
-                      onPressed: isPlayerEnough
-                          ? () {
-                              Navigator.pushNamedAndRemoveUntil(
-                                context,
-                                PreparationPage.routeName,
-                                (route) => false,
-                                arguments: PreparationPageArguments(
-                                  args.roomId,
-                                  args.nickname,
-                                  playerNicknames.length,
-                                ),
-                              );
-                            }
-                          : null,
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
+                      if (args.nickname == hostname) {
+                        return PrimaryGameButton(
+                          label: 'Start Game',
+                          maxSize: true,
+                          onPressed: isPlayerEnough
+                              ? () {
+                                  Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    PreparationPage.routeName,
+                                    (route) => false,
+                                    arguments: PreparationPageArguments(
+                                      args.roomId,
+                                      args.nickname,
+                                      playerNicknames.length,
+                                    ),
+                                  );
+                                }
+                              : null,
+                        );
+                      } else {
+                        return Text("Waiting for host to start the game");
+                      }
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
+                ),
               ),
               SizedSpacer.vertical(space: Space.large),
               const Text(
@@ -206,12 +229,12 @@ class _GameRoomPageState extends State<GameRoomPage> {
 
 class GameRoomPageArguments {
   final String roomId;
-  final String hostname;
+  // final String hostname;
   final String nickname;
 
   GameRoomPageArguments(
     this.roomId,
-    this.hostname,
+    // this.hostname,
     this.nickname,
   );
 }
