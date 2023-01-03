@@ -16,9 +16,10 @@ class CreateRoomService {
 
       Navigator.pushNamed(
         context,
-        PreparationPage.routeName,
-        arguments: PreparationPageArguments(
+        GameRoomPage.routeName,
+        arguments: GameRoomPageArguments(
           roomId,
+          nickname,
           nickname,
         ),
       );

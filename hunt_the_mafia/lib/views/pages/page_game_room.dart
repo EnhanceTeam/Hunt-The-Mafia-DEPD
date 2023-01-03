@@ -13,7 +13,7 @@ class _GameRoomPageState extends State<GameRoomPage> {
   bool isPlayerEnough = false;
 
   void checkPlayerAmount(int playerAmount) {
-    if (playerAmount > 1) {
+    if (playerAmount > 1 && playerAmount <= 20) {
       isPlayerEnough = true;
     }
 
@@ -157,6 +157,7 @@ class _GameRoomPageState extends State<GameRoomPage> {
                                 arguments: PreparationPageArguments(
                                   args.roomId,
                                   args.nickname,
+                                  playerNicknames.length,
                                 ),
                               );
                             }
@@ -168,6 +169,11 @@ class _GameRoomPageState extends State<GameRoomPage> {
                     );
                   }
                 },
+              ),
+              SizedSpacer.vertical(space: Space.large),
+              const Text(
+                'Note: Total maximum players is 20',
+                style: TextStyle(fontStyle: FontStyle.italic),
               ),
             ],
           ),
