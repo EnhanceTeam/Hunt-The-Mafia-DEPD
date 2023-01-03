@@ -84,7 +84,7 @@ class _PreparationPageState extends State<PreparationPage> {
                                   _mafiaCount +
                                   _mrWhiteCount +
                                   _mrBlackCount;
-                              if (_totalCount < 20) {
+                              if (_totalCount < args.playerCount) {
                                 _civilianCount++;
                               }
                             });
@@ -132,7 +132,7 @@ class _PreparationPageState extends State<PreparationPage> {
                                   _mrWhiteCount +
                                   _mrBlackCount;
                               if (_mafiaCount < (_civilianCount - 3) &&
-                                  _totalCount < 20) {
+                                  _totalCount < args.playerCount) {
                                 _mafiaCount++;
                               }
                             });
@@ -179,7 +179,7 @@ class _PreparationPageState extends State<PreparationPage> {
                                   _mafiaCount +
                                   _mrWhiteCount +
                                   _mrBlackCount;
-                              if (_mrWhiteCount < 1 && _totalCount < 20) {
+                              if (_mrWhiteCount < 1 && _totalCount < args.playerCount) {
                                 _mrWhiteCount++;
                               }
                             });
@@ -226,7 +226,7 @@ class _PreparationPageState extends State<PreparationPage> {
                                   _mafiaCount +
                                   _mrWhiteCount +
                                   _mrBlackCount;
-                              if (_mrBlackCount < 1 && _totalCount < 20) {
+                              if (_mrBlackCount < 1 && _totalCount < args.playerCount) {
                                 _mrBlackCount++;
                               }
                             });
@@ -234,11 +234,6 @@ class _PreparationPageState extends State<PreparationPage> {
                           child: const Icon(Icons.add, color: Colors.black),
                         ),
                       ],
-                    ),
-                    SizedSpacer.vertical(space: Space.large),
-                    const Text(
-                      'Note: Total maximum players is 20',
-                      style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ],
                 ),
@@ -279,9 +274,11 @@ class _PreparationPageState extends State<PreparationPage> {
 class PreparationPageArguments {
   final String roomId;
   final String nickname;
+  final int playerCount;
 
   PreparationPageArguments(
     this.roomId,
     this.nickname,
+    this.playerCount,
   );
 }
