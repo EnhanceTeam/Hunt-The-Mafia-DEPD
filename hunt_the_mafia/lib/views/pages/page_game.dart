@@ -15,6 +15,8 @@ class _GamePageState extends State<GamePage> {
     final args =
         ModalRoute.of(context)!.settings.arguments as GamePageArguments;
 
+    final String player = args.nickname;
+
     return Scaffold(
         body: SafeArea(
       child: Container(
