@@ -157,6 +157,7 @@ class _GameRoomPageState extends State<GameRoomPage> {
                                 arguments: PreparationPageArguments(
                                   args.roomId,
                                   args.nickname,
+                                  playerNicknames.length,
                                 ),
                               );
                             }
