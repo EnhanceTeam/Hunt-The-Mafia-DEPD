@@ -20,7 +20,7 @@ class CreateRoomService {
         arguments: GameRoomPageArguments(
           roomId,
           nickname,
-          nickname,
+          // nickname,
         ),
       );
     }).catchError((error) => {
