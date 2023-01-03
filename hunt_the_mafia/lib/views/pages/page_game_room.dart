@@ -34,6 +34,9 @@ class _GameRoomPageState extends State<GameRoomPage> {
 
         await GameRoomService.removePlayer(args.roomId, args.nickname);
 
+        // }
+
+        if (!mounted) return Future.value(false);
         await FirebaseFirestore.instance
             .collection("rooms")
             .doc(args.roomId)
@@ -45,6 +48,8 @@ class _GameRoomPageState extends State<GameRoomPage> {
                 .collection("rooms")
                 .doc(args.roomId)
                 .delete();
+
+            Navigator.pop(context, false);
           } else {
             FirebaseFirestore.instance
                 .collection("rooms")
@@ -52,10 +57,6 @@ class _GameRoomPageState extends State<GameRoomPage> {
                 .update({"hostname": value.docs[0].id});
           }
         });
-
-        // }
-
-        if (!mounted) return Future.value(false);
         Navigator.pop(context, false);
 
         return Future.value(false);
@@ -176,8 +177,7 @@ class _GameRoomPageState extends State<GameRoomPage> {
                     if (snapshot.hasError) {
                       return Text('Error = ${snapshot.error}');
                     } else if (snapshot.hasData) {
-                      var hostname =
-                          snapshot.data!.docs[0].id; // todo: fix this;
+                      var hostname = snapshotHost.data!.get("hostname");
                       var data = snapshot.data!.docs;
                       var playerNicknames = data.map((doc) {
                         return doc.id;
