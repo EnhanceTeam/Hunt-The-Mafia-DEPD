@@ -39,4 +39,16 @@ class JoinRoomService {
     playerDocRef.set({"role": null});
     return false;
   }
+
+  static Future<bool> roomHasStarted(String roomId) async {
+    CollectionReference roomsColRef =
+        FirebaseFirestore.instance.collection("rooms");
+    DocumentReference roomDocRef = roomsColRef.doc(roomId);
+    DocumentSnapshot roomDocSnapshot = await roomDocRef.get();
+
+    Map<String, dynamic> data = roomDocSnapshot.data() as Map<String, dynamic>;
+    var hasStarted = data["hasStarted"];
+
+    return hasStarted;
+  }
 }

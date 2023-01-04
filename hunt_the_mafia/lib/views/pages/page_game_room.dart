@@ -183,8 +183,14 @@ class _GameRoomPageState extends State<GameRoomPage> {
                         return doc.id;
                       }).toList();
                       bool isPlayerEnough = playerNicknames.length > 2;
+                      // bool isPlayerEnough = true;
 
                       if (args.nickname == hostname) {
+                        FirebaseFirestore.instance
+                            .collection("rooms")
+                            .doc(args.roomId)
+                            .update({"preparation": true});
+
                         return PrimaryGameButton(
                           label: 'Start Game',
                           maxSize: true,
@@ -204,7 +210,48 @@ class _GameRoomPageState extends State<GameRoomPage> {
                               : null,
                         );
                       } else {
-                        return Text("Waiting for host to start the game");
+                        // return Text("Waiting for host to start the game");
+                        return StreamBuilder<
+                            DocumentSnapshot<Map<String, dynamic>>>(
+                          stream: FirebaseFirestore.instance
+                              .collection("rooms")
+                              .doc(args.roomId)
+                              .snapshots(),
+                          builder: (_, snapshotRoomReadiness) {
+                            if (snapshotRoomReadiness.hasError) {
+                              return Text(
+                                  "Error = ${snapshotRoomReadiness.error}");
+                            } else if (snapshotRoomReadiness.hasData) {
+                              var preparationPhase = snapshotRoomReadiness.data!
+                                  .get("preparation");
+
+                              var gameStart =
+                                  snapshotRoomReadiness.data!.get("gameStart");
+
+                              if (preparationPhase) {
+                                return Text(
+                                    "Waiting for host in preparation phase");
+                              } else if (gameStart) {
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  GamePage.routeName,
+                                  (route) => false,
+                                  arguments: GamePageArguments(
+                                    args.roomId,
+                                    args.nickname,
+                                  ),
+                                );
+                              } else {
+                                return Text(
+                                    "Waiting for host to start the game");
+                              }
+                            }
+
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        );
                       }
                     } else {
                       return const Center(
