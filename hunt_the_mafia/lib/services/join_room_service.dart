@@ -46,6 +46,10 @@ class JoinRoomService {
     DocumentReference roomDocRef = roomsColRef.doc(roomId);
     DocumentSnapshot roomDocSnapshot = await roomDocRef.get();
 
-    return roomDocSnapshot.get("gameStart");
+    if (roomDocSnapshot.exists) {
+      return roomDocSnapshot.get("gameStart");
+    }
+
+    return false;
   }
 }
