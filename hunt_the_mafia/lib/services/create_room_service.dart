@@ -9,7 +9,11 @@ class CreateRoomService {
 
     String roomId = (new Random().nextInt(900000) + 100000).toString();
 
-    return roomsRef.doc(roomId).set({"hostname": nickname}).then((value) {
+    return roomsRef.doc(roomId).set({
+      "hostname": nickname,
+      "preparation": false,
+      "gameStart": false
+    }).then((value) {
       roomsRef.doc(roomId).collection("players").doc(nickname).set({
         "role": null,
       });

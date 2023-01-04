@@ -179,7 +179,8 @@ class _PreparationPageState extends State<PreparationPage> {
                                   _mafiaCount +
                                   _mrWhiteCount +
                                   _mrBlackCount;
-                              if (_mrWhiteCount < 1 && _totalCount < args.playerCount) {
+                              if (_mrWhiteCount < 1 &&
+                                  _totalCount < args.playerCount) {
                                 _mrWhiteCount++;
                               }
                             });
@@ -226,7 +227,8 @@ class _PreparationPageState extends State<PreparationPage> {
                                   _mafiaCount +
                                   _mrWhiteCount +
                                   _mrBlackCount;
-                              if (_mrBlackCount < 1 && _totalCount < args.playerCount) {
+                              if (_mrBlackCount < 1 &&
+                                  _totalCount < args.playerCount) {
                                 _mrBlackCount++;
                               }
                             });
@@ -251,6 +253,13 @@ class _PreparationPageState extends State<PreparationPage> {
                       args.roomId, "mr_white_count", _mrWhiteCount);
                   RoleCountService.addRole(
                       args.roomId, "mr_black_count", _mrBlackCount);
+
+                  FirebaseFirestore.instance
+                      .collection("rooms")
+                      .doc(args.roomId)
+                      .update({
+                    "gameStart": true,
+                  });
 
                   Navigator.pushNamedAndRemoveUntil(
                     context,

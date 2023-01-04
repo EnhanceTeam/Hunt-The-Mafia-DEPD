@@ -109,15 +109,23 @@ class GameDialog {
                       String roomId = codeController.text;
                       bool isRoomExists =
                           await JoinRoomService.isRoomExists(roomId);
+                      bool roomHasStarted =
+                          await JoinRoomService.roomHasStarted(roomId);
+
                       if (isRoomExists) {
-                        if (!mounted) return;
-                        Navigator.of(context).pop();
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) =>
-                              GameDialog.joinEnterNicknameDialog(
-                                  roomId: roomId, context: context),
-                        );
+                        if (!roomHasStarted) {
+                          if (!mounted) return;
+                          Navigator.of(context).pop();
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                GameDialog.joinEnterNicknameDialog(
+                                    roomId: roomId, context: context),
+                          );
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "This room has started the game!");
+                        }
                       } else {
                         Fluttertoast.showToast(
                           msg: "Room doesn't exist",
