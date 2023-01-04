@@ -10,3 +10,4 @@ part "create_room_service.dart";
 part 'game_room_service.dart';
 part "join_room_service.dart";
 part 'role_count_service.dart';
+part "gameplay_service.dart";
