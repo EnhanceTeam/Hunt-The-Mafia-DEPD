@@ -235,15 +235,18 @@ class _GameRoomPageState extends State<GameRoomPage> {
                                 return Text(
                                     "Waiting for host in preparation phase");
                               } else if (gameStart) {
-                                Navigator.pushNamedAndRemoveUntil(
-                                  context,
-                                  GamePage.routeName,
-                                  (route) => false,
-                                  arguments: GamePageArguments(
-                                    args.roomId,
-                                    args.nickname,
-                                  ),
-                                );
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((_) {
+                                  Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    GamePage.routeName,
+                                    (route) => false,
+                                    arguments: GamePageArguments(
+                                      args.roomId,
+                                      args.nickname,
+                                    ),
+                                  );
+                                });
                               }
                             }
 
