@@ -182,8 +182,8 @@ class _GameRoomPageState extends State<GameRoomPage> {
                       var playerNicknames = data.map((doc) {
                         return doc.id;
                       }).toList();
-                      // todo: bool isPlayerEnough = playerNicknames.length > 2;
-                      bool isPlayerEnough = true;
+                      bool isPlayerEnough = playerNicknames.length > 2;
+                      // bool isPlayerEnough = true;
 
                       if (args.nickname == hostname) {
                         FirebaseFirestore.instance
