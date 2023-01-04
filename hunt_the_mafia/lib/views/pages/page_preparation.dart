@@ -257,9 +257,7 @@ class _PreparationPageState extends State<PreparationPage> {
                   FirebaseFirestore.instance
                       .collection("rooms")
                       .doc(args.roomId)
-                      .update({
-                    "gameStart": true,
-                  });
+                      .update({"gameStart": true, "preparation": false});
 
                   Navigator.pushNamedAndRemoveUntil(
                     context,
