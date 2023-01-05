@@ -15,7 +15,25 @@ class _GamePageState extends State<GamePage> {
     final args =
         ModalRoute.of(context)!.settings.arguments as GamePageArguments;
 
-    final String player = args.nickname;
+    final String nickname = args.nickname;
+    final String roomId = args.roomId;
+
+    @override
+    void initState() {
+      super.initState();
+
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await FutureBuilder(
+            future: GameplayService.showPlayerRole(nickname, roomId, context),
+            builder: ((context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return snapshot.data!;
+              } else {
+                return CircularProgressIndicator();
+              }
+            }));
+      });
+    }
 
     return Scaffold(
         body: SafeArea(
@@ -24,233 +42,58 @@ class _GamePageState extends State<GamePage> {
         height: double.infinity,
         child: Column(
           children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: RawMaterialButton(
-                onPressed: () {},
-                splashColor: Color.fromARGB(255, 255, 183, 0),
-                child: Icon(
-                  Icons.arrow_back_rounded,
-                  size: 30,
-                  color: Colors.black,
-                ),
-                padding: EdgeInsets.all(10.0),
-                shape: CircleBorder(),
-              ),
-            ),
-            Text(
-              "Room Code",
-              style: TextStyle(fontSize: 32),
-            ),
-            Text(
-              args.roomId,
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
-            ),
-            SizedBox(
-              height: 32,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                  children: [
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.black),
-                    ),
-                    Text("Nickname")
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.black),
-                    ),
-                    Text("Nickname")
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.black),
-                    ),
-                    Text("Nickname")
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 32,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                  children: [
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.black),
-                    ),
-                    Text("Nickname")
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.black),
-                    ),
-                    Text("Nickname")
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.black),
-                    ),
-                    Text("Nickname")
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 32,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                  children: [
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.black),
-                    ),
-                    Text("Nickname")
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.black),
-                    ),
-                    Text("Nickname")
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.black),
-                    ),
-                    Text("Nickname")
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 32,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                  children: [
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.black),
-                    ),
-                    Text("Nickname")
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.black),
-                    ),
-                    Text("Nickname")
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.black),
-                    ),
-                    Text("Nickname")
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 32,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                  children: [
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.black),
-                    ),
-                    Text("Nickname")
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.black),
-                    ),
-                    Text("Nickname")
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.black),
-                    ),
-                    Text("Nickname")
-                  ],
-                ),
-              ],
-            )
+            StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("rooms")
+                    .doc(roomId)
+                    .collection("players")
+                    .snapshots(),
+                builder: (_, snapshot) {
+                  return CustomScrollView(
+                    primary: false,
+                    slivers: [
+                      SliverPadding(
+                        padding: EdgeInsets.all(15),
+                        sliver: SliverGrid.count(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          children: [
+                            for (var i = 0; i < snapshot.data!.docs.length; i++)
+                              Container(
+                                  padding: EdgeInsets.all(8),
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .onSurfaceVariant,
+                                        child: Text(
+                                          snapshot.data!.docs
+                                              .elementAt(i)
+                                              .id
+                                              .toString()
+                                              .substring(0, 1)
+                                              .toUpperCase(),
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary,
+                                          ),
+                                        ),
+                                      ),
+                                      Text(snapshot.data!.docs
+                                          .elementAt(i)
+                                          .id
+                                          .toString())
+                                    ],
+                                  )),
+                          ],
+                        ),
+                      )
+                    ],
+                  );
+                })
           ],
         ),
       ),

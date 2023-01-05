@@ -438,7 +438,13 @@ class GameDialog {
     );
   }
 
-  static AlertDialog roleDialog({required BuildContext context}) {
+  static AlertDialog roleDialog(
+      {required BuildContext context,
+      required String nickname,
+      required String role,
+      required String roomCode,
+      required String word,
+      required String word2}) {
     return AlertDialog(
       content: Wrap(
         children: [
@@ -449,29 +455,33 @@ class GameDialog {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Daniel", style: TextStyle(fontSize: 18)),
+                    Text(nickname, style: TextStyle(fontSize: 18)),
                     SizedSpacer.horizontal(space: Space.small),
                     CircleAvatar(
                       backgroundColor:
                           Theme.of(context).colorScheme.onSurfaceVariant,
                       child: Text(
-                        'D',
+                        nickname.substring(0, 1).toUpperCase(),
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onPrimary,
                         ),
                       ),
                     ),
                     SizedSpacer.horizontal(space: Space.small),
-                    const Text("Civilian", style: TextStyle(fontSize: 18)),
+                    Text(role, style: TextStyle(fontSize: 18)),
                   ],
                 ),
                 SizedSpacer.vertical(space: Space.medium),
                 const Text('Your secret word is:',
                     style: TextStyle(fontSize: 14, color: Colors.black54)),
                 SizedSpacer.vertical(space: Space.medium),
-                const Text('Sandals',
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                role == "mr_black"
+                    ? Text(word + " and " + word2,
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold))
+                    : Text(word,
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
               ],
             ),
           ),
