@@ -20,4 +20,5 @@ part 'components/text_field.dart';
 
 part 'button_game.dart';
 part 'card_shop_item.dart';
+part 'card_guide.dart';
 part 'waiting_room_player_item.card.dart';

@@ -110,6 +110,32 @@ class _DummyPageState extends State<DummyPage> {
                       );
                     },
                     child: const Text("Role&Word PopUp")),
+                    SizedSpacer.vertical(),
+                ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            GameDialog.describeDialog(context: context),
+                      );
+                    },
+                    child: const Text("Describe Pop Up")),
+                    SizedSpacer.vertical(),
+                ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            GameDialog.waitDialog(context: context),
+                      );
+                    },
+                    child: const Text("Wait Pop Up")),
+                    SizedSpacer.vertical(),
+                ElevatedButton(
+                    onPressed: () {
+                     Navigator.pushNamed(context, GuidePage.routeName);
+                    },
+                    child: const Text("Guide")),
               ],
             ),
           ),

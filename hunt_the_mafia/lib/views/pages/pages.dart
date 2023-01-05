@@ -15,3 +15,4 @@ part 'page_dummy.dart';
 part 'page_shop.dart';
 part 'page_setting.dart';
 part 'page_preparation.dart';
+part 'page_guide.dart';
