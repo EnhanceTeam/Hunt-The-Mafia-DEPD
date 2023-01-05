@@ -46,9 +46,10 @@ class JoinRoomService {
     DocumentReference roomDocRef = roomsColRef.doc(roomId);
     DocumentSnapshot roomDocSnapshot = await roomDocRef.get();
 
-    Map<String, dynamic> data = roomDocSnapshot.data() as Map<String, dynamic>;
-    var hasStarted = data["hasStarted"];
+    if (roomDocSnapshot.exists) {
+      return roomDocSnapshot.get("gameStart");
+    }
 
-    return hasStarted;
+    return false;
   }
 }

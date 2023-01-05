@@ -186,16 +186,16 @@ class _GameRoomPageState extends State<GameRoomPage> {
                       // bool isPlayerEnough = true;
 
                       if (args.nickname == hostname) {
-                        FirebaseFirestore.instance
-                            .collection("rooms")
-                            .doc(args.roomId)
-                            .update({"preparation": true});
-
                         return PrimaryGameButton(
                           label: 'Start Game',
                           maxSize: true,
                           onPressed: isPlayerEnough
                               ? () {
+                                  FirebaseFirestore.instance
+                                      .collection("rooms")
+                                      .doc(args.roomId)
+                                      .update({"preparation": true});
+
                                   Navigator.pushNamedAndRemoveUntil(
                                     context,
                                     PreparationPage.routeName,
@@ -228,22 +228,25 @@ class _GameRoomPageState extends State<GameRoomPage> {
                               var gameStart =
                                   snapshotRoomReadiness.data!.get("gameStart");
 
-                              if (preparationPhase) {
+                              if (!preparationPhase && !gameStart) {
+                                return Text(
+                                    "Waiting for host to start the game");
+                              } else if (preparationPhase) {
                                 return Text(
                                     "Waiting for host in preparation phase");
                               } else if (gameStart) {
-                                Navigator.pushNamedAndRemoveUntil(
-                                  context,
-                                  GamePage.routeName,
-                                  (route) => false,
-                                  arguments: GamePageArguments(
-                                    args.roomId,
-                                    args.nickname,
-                                  ),
-                                );
-                              } else {
-                                return Text(
-                                    "Waiting for host to start the game");
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((_) {
+                                  Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    GamePage.routeName,
+                                    (route) => false,
+                                    arguments: GamePageArguments(
+                                      args.roomId,
+                                      args.nickname,
+                                    ),
+                                  );
+                                });
                               }
                             }
 
