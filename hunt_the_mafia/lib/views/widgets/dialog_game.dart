@@ -486,4 +486,62 @@ class GameDialog {
       ],
     );
   }
+
+  static AlertDialog describeDialog({required BuildContext context}) {
+    return AlertDialog(
+      content: Wrap(
+        children: [
+          SizedBox(
+            width: 330,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Describe your word to the others",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20,
+                    // fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontFamily: "Poppins",
+                  ),
+                ),
+                SizedSpacer.vertical(space: Space.small),
+                SizedBox(
+                  width: 200.0,
+                  height: 40.0,
+                  child: PrimaryGameButton(
+                      onPressed: () {},
+                      label: "NEXT",
+                      foregroundColor: Colors.white,
+                      backgroundColor: const Color(0xFF311A46)),
+                ),
+                SizedSpacer.vertical(space: Space.small),
+                const Text('push the button if you are done',
+                    style: TextStyle(fontSize: 14, color: Colors.black54)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static AlertDialog waitDialog({required BuildContext context}) {
+    return const AlertDialog(
+      title: Text(
+        "Daniel",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+          fontFamily: "Poppins",
+        ),
+      ),
+      content: Text('is describing their word',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 18, color: Colors.black)),
+    );
+  }
 }
