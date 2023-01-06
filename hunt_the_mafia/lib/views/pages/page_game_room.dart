@@ -235,21 +235,21 @@ class _GameRoomPageState extends State<GameRoomPage> {
                                 return Text(
                                     "Waiting for host in preparation phase");
                               } else if (gameStart) {
-                                WidgetsBinding.instance
-                                    .addPostFrameCallback((_) {
-                                  GameplayService.showPlayerRole(
-                                      args.nickname, args.roomId, context);
+                                // WidgetsBinding.instance
+                                //     .addPostFrameCallback((_) {
+                                GameplayService.showPlayerRole(
+                                    args.nickname, args.roomId, context);
 
-                                  // Navigator.pushNamedAndRemoveUntil(
-                                  //   context,
-                                  //   GamePage.routeName,
-                                  //   (route) => false,
-                                  //   arguments: GamePageArguments(
-                                  //     args.roomId,
-                                  //     args.nickname,
-                                  //   ),
-                                  // );
-                                });
+                                // Navigator.pushNamedAndRemoveUntil(
+                                //   context,
+                                //   GamePage.routeName,
+                                //   (route) => false,
+                                //   arguments: GamePageArguments(
+                                //     args.roomId,
+                                //     args.nickname,
+                                //   ),
+                                // );
+                                // });
                               }
                             }
 
