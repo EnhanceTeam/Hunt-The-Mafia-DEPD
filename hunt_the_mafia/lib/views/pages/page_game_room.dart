@@ -237,15 +237,18 @@ class _GameRoomPageState extends State<GameRoomPage> {
                               } else if (gameStart) {
                                 WidgetsBinding.instance
                                     .addPostFrameCallback((_) {
-                                  Navigator.pushNamedAndRemoveUntil(
-                                    context,
-                                    GamePage.routeName,
-                                    (route) => false,
-                                    arguments: GamePageArguments(
-                                      args.roomId,
-                                      args.nickname,
-                                    ),
-                                  );
+                                  GameplayService.showPlayerRole(
+                                      args.nickname, args.roomId, context);
+
+                                  // Navigator.pushNamedAndRemoveUntil(
+                                  //   context,
+                                  //   GamePage.routeName,
+                                  //   (route) => false,
+                                  //   arguments: GamePageArguments(
+                                  //     args.roomId,
+                                  //     args.nickname,
+                                  //   ),
+                                  // );
                                 });
                               }
                             }
