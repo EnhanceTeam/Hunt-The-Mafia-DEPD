@@ -12,28 +12,39 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage> {
   @override
   Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as GamePageArguments;
+    // final args =
+    //     ModalRoute.of(context)!.settings.arguments as GamePageArguments;
 
-    final String nickname = args.nickname;
-    final String roomId = args.roomId;
+    // final String nickname = args.nickname;
+    // final String roomId = args.roomId;
+
+    var args = null;
+
+    String nickname = "";
+    String roomId = "";
 
     @override
     void initState() {
       super.initState();
+      args = ModalRoute.of(context)!.settings.arguments as GamePageArguments;
 
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        await FutureBuilder(
-            future: GameplayService.showPlayerRole(nickname, roomId, context),
-            builder: ((context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return snapshot.data!;
-              } else {
-                return CircularProgressIndicator();
-              }
-            }));
-      });
+      nickname = args.nickname;
+      roomId = args.roomId;
+
+      GameplayService.showPlayerRole(nickname, roomId, context);
     }
+
+    // WidgetsBinding.instance.addPostFrameCallback((_) async {
+    //   await FutureBuilder(
+    //       future: ,
+    //       builder: ((context, snapshot) {
+    //         if (snapshot.connectionState == ConnectionState.done) {
+    //           return snapshot.data!;
+    //         } else {
+    //           return CircularProgressIndicator();
+    //         }
+    //       }));
+    // });
 
     return Scaffold(
         body: SafeArea(
@@ -42,7 +53,7 @@ class _GamePageState extends State<GamePage> {
         height: double.infinity,
         child: Column(
           children: [
-            StreamBuilder(
+            StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                 stream: FirebaseFirestore.instance
                     .collection("rooms")
                     .doc(roomId)

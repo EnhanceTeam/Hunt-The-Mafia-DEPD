@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         navigatorKey: GlobalContextService.navigatorKey,
         initialRoute: MainMenuPage.routeName,
         routes: {
-          DummyPage.routeName: (context) => const DummyPage(),
+          // DummyPage.routeName: (context) => const DummyPage(),
           MainMenuPage.routeName: (context) => const MainMenuPage(),
           ShopPage.routeName: (context) => const ShopPage(),
           PreparationPage.routeName: (context) => const PreparationPage(),
