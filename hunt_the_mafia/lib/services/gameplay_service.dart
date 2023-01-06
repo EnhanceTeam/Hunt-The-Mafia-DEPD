@@ -109,81 +109,38 @@ class GameplayService {
             .get()
             .then((value) {
           if (value.docs.isNotEmpty) {
-            var availableRoles = 0;
+            var availableRoles = [];
 
-            if (civilianCount > 0) {
-              availableRoles += 1;
+            for (var i = 0; i < civilianCount; i++) {
+              availableRoles.add("civilian");
             }
 
-            if (mafiaCount > 0) {
-              availableRoles += 1;
+            for (var i = 0; i < mafiaCount; i++) {
+              availableRoles.add("mafia");
             }
 
-            if (mrWhiteCount > 0) {
-              availableRoles += 1;
+            for (var i = 0; i < mrWhiteCount; i++) {
+              availableRoles.add("mr_white");
             }
 
-            if (mrBlackCount > 0) {
-              availableRoles += 1;
+            for (var i = 0; i < mrBlackCount; i++) {
+              availableRoles.add("mr_black");
             }
 
             value.docs.forEach((element) {
               // todo: randomize role
-              var randomRole = Random().nextInt(availableRoles);
+              var randomRole = Random().nextInt(availableRoles.length);
 
-              if (randomRole == 0) {
-                FirebaseFirestore.instance
-                    .collection("rooms")
-                    .doc(roomId)
-                    .collection("players")
-                    .doc(element.id)
-                    .update({
-                  "role": "civilian",
-                  "is_alive": true,
-                }).then((_) {
-                  availableRoles -= 1;
-                  civilianCount -= 1;
-                });
-              } else if (randomRole == 1) {
-                FirebaseFirestore.instance
-                    .collection("rooms")
-                    .doc(roomId)
-                    .collection("players")
-                    .doc(element.id)
-                    .update({
-                  "role": "mafia",
-                  "is_alive": true,
-                }).then((_) {
-                  availableRoles -= 1;
-                  mafiaCount -= 1;
-                });
-              } else if (randomRole == 2) {
-                FirebaseFirestore.instance
-                    .collection("rooms")
-                    .doc(roomId)
-                    .collection("players")
-                    .doc(element.id)
-                    .update({
-                  "role": "mr_white",
-                  "is_alive": true,
-                }).then((_) {
-                  availableRoles -= 1;
-                  mrWhiteCount -= 1;
-                });
-              } else if (randomRole == 3) {
-                FirebaseFirestore.instance
-                    .collection("rooms")
-                    .doc(roomId)
-                    .collection("players")
-                    .doc(element.id)
-                    .update({
-                  "role": "mr_black",
-                  "is_alive": true,
-                }).then((_) {
-                  availableRoles -= 1;
-                  mrBlackCount -= 1;
-                });
-              }
+              FirebaseFirestore.instance
+                  .collection("rooms")
+                  .doc(roomId)
+                  .collection("players")
+                  .doc(element.id)
+                  .update({
+                "role": availableRoles.elementAt(randomRole),
+              });
+
+              availableRoles.removeAt(randomRole);
             });
           }
         });

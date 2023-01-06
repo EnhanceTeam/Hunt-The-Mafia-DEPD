@@ -25,6 +25,8 @@ class _GameRoomPageState extends State<GameRoomPage> {
     final args =
         ModalRoute.of(context)!.settings.arguments as GameRoomPageArguments;
 
+    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
     return WillPopScope(
       onWillPop: () async {
         // bool isPlayerHost =
@@ -47,9 +49,10 @@ class _GameRoomPageState extends State<GameRoomPage> {
             FirebaseFirestore.instance
                 .collection("rooms")
                 .doc(args.roomId)
-                .delete();
-
-            Navigator.pop(context, false);
+                .delete()
+                .then(((value) {
+              Navigator.pop(context, false);
+            }));
           } else {
             FirebaseFirestore.instance
                 .collection("rooms")
@@ -62,6 +65,7 @@ class _GameRoomPageState extends State<GameRoomPage> {
         return Future.value(false);
       },
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(),
         body: SafeArea(
           minimum: const EdgeInsets.all(Space.medium),
@@ -237,8 +241,13 @@ class _GameRoomPageState extends State<GameRoomPage> {
                               } else if (gameStart) {
                                 // WidgetsBinding.instance
                                 //     .addPostFrameCallback((_) {
-                                GameplayService.showPlayerRole(
-                                    args.nickname, args.roomId, context);
+                                Future.delayed(Duration(milliseconds: 2500),
+                                    () {
+                                  GameplayService.showPlayerRole(
+                                      args.nickname,
+                                      args.roomId,
+                                      _scaffoldKey.currentContext!);
+                                });
 
                                 // Navigator.pushNamedAndRemoveUntil(
                                 //   context,
