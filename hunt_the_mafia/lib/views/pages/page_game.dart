@@ -42,37 +42,37 @@ class _GamePageState extends State<GamePage> {
                             crossAxisSpacing: 10,
                             mainAxisSpacing: 10,
                             children: [
-                              for (var i = 0;
-                                  i < snapshot.data!.docs.length;
-                                  i++)
-                                Container(
-                                    padding: EdgeInsets.all(8),
-                                    child: Column(
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundColor: Theme.of(context)
-                                              .colorScheme
-                                              .onSurfaceVariant,
-                                          child: Text(
-                                            snapshot.data!.docs
-                                                .elementAt(i)
-                                                .id
-                                                .toString()
-                                                .substring(0, 1)
-                                                .toUpperCase(),
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onPrimary,
-                                            ),
+                              // for (var i = 0;
+                              //     i < snapshot.data!.docs.length;
+                              //     i++)
+                              Container(
+                                  padding: EdgeInsets.all(8),
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .onSurfaceVariant,
+                                        child: Text(
+                                          snapshot.data!.docs
+                                              .elementAt(0)
+                                              .id
+                                              .toString()
+                                              .substring(0, 1)
+                                              .toUpperCase(),
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary,
                                           ),
                                         ),
-                                        Text(snapshot.data!.docs
-                                            .elementAt(i)
-                                            .id
-                                            .toString())
-                                      ],
-                                    )),
+                                      ),
+                                      Text(snapshot.data!.docs
+                                          .elementAt(0)
+                                          .id
+                                          .toString())
+                                    ],
+                                  )),
                             ],
                           ),
                         )

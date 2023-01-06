@@ -254,13 +254,13 @@ class _PreparationPageState extends State<PreparationPage> {
                   RoleCountService.addRole(
                       args.roomId, "mr_black_count", _mrBlackCount);
 
-                  FirebaseFirestore.instance
-                      .collection("rooms")
-                      .doc(args.roomId)
-                      .update({"gameStart": true, "preparation": false});
-
                   GameplayService.roleRandomizer(args.roomId).then((value) {
                     GameplayService.wordRandomizer(args.roomId).then((value) {
+                      FirebaseFirestore.instance
+                          .collection("rooms")
+                          .doc(args.roomId)
+                          .update({"gameStart": true, "preparation": false});
+
                       GameplayService.showPlayerRole(
                           args.nickname, args.roomId, context);
                     });
