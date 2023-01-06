@@ -259,15 +259,12 @@ class _PreparationPageState extends State<PreparationPage> {
                       .doc(args.roomId)
                       .update({"gameStart": true, "preparation": false});
 
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    GamePage.routeName,
-                    (route) => false,
-                    arguments: GamePageArguments(
-                      args.roomId,
-                      args.nickname,
-                    ),
-                  );
+                  GameplayService.roleRandomizer(args.roomId).then((value) {
+                    GameplayService.wordRandomizer(args.roomId).then((value) {
+                      GameplayService.showPlayerRole(
+                          args.nickname, args.roomId, context);
+                    });
+                  });
                 },
               )
             ],

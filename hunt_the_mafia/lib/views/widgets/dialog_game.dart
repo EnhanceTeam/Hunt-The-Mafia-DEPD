@@ -491,6 +491,15 @@ class GameDialog {
         TextButton(
             onPressed: () {
               Navigator.of(context).pop();
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                GamePage.routeName,
+                (route) => false,
+                arguments: GamePageArguments(
+                  roomCode,
+                  nickname,
+                ),
+              );
             },
             child: const Text("OK"))
       ],

@@ -1,43 +1,46 @@
 part of "services.dart";
 
 class GameplayService {
-  static Future<AlertDialog> showPlayerRole(
+  static void showPlayerRole(
       String nickname, String roomId, BuildContext context) {
-    roleRandomizer(roomId);
-    wordRandomizer(roomId);
-
-    // todo: randomize word for each player
-
-    return FirebaseFirestore.instance
+    FirebaseFirestore.instance
         .collection("rooms")
         .doc(roomId)
         .collection("players")
         .doc(nickname)
         .get()
         .then((value) {
+      print(value.data());
       var role = value.get("role");
       var word1 = value.get("word");
-      var word2 = value.get("word2");
+      var word2 = "";
 
-      return GameDialog.roleDialog(
+      if (role == "mr_black") {
+        word2 = value.get("word2");
+      }
+
+      showDialog(
+          barrierDismissible: false,
           context: context,
-          nickname: nickname,
-          role: role,
-          roomCode: roomId,
-          word: word1,
-          word2: word2);
+          builder: ((context) => GameDialog.roleDialog(
+              context: context,
+              nickname: nickname,
+              role: role,
+              roomCode: roomId,
+              word: word1,
+              word2: word2)));
     });
   }
 
-  static void wordRandomizer(String roomId) {
-    FirebaseFirestore.instance.collection("words").get().then((value) {
+  static Future<void> wordRandomizer(String roomId) {
+    return FirebaseFirestore.instance.collection("words").get().then((value) {
       var words = value.docs;
       var wordsIndex = Random().nextInt(words.length);
-      var chosenWords = words[wordsIndex];
+      var chosenWords = words.elementAt(wordsIndex);
 
       var randomCivilianWord = Random().nextInt(2);
-      var civilianWord = chosenWords.get(randomCivilianWord);
-      var mafiaWord = chosenWords.get(randomCivilianWord == 0 ? 1 : 0);
+      var civilianWord = chosenWords.get(randomCivilianWord.toString());
+      var mafiaWord = chosenWords.get(randomCivilianWord == 0 ? "1" : "0");
 
       FirebaseFirestore.instance
           .collection("rooms")
@@ -46,7 +49,7 @@ class GameplayService {
           .get()
           .then((value) {
         value.docs.forEach((element) {
-          if (element.get("role") == "civilian") {
+          if (element.get("role").toString() == "civilian") {
             FirebaseFirestore.instance
                 .collection("rooms")
                 .doc(roomId)
@@ -55,7 +58,7 @@ class GameplayService {
                 .update({
               "word": civilianWord,
             });
-          } else if (element.get("role") == "mafia") {
+          } else if (element.get("role").toString() == "mafia") {
             FirebaseFirestore.instance
                 .collection("rooms")
                 .doc(roomId)
@@ -64,7 +67,7 @@ class GameplayService {
                 .update({
               "word": mafiaWord,
             });
-          } else if (element.get("role") == "mr_black") {
+          } else if (element.get("role").toString() == "mr_black") {
             FirebaseFirestore.instance
                 .collection("rooms")
                 .doc(roomId)
@@ -74,7 +77,7 @@ class GameplayService {
               "word": civilianWord,
               "word2": mafiaWord,
             });
-          } else if (element.get("role") == "mr_white") {
+          } else if (element.get("role").toString() == "mr_white") {
             FirebaseFirestore.instance
                 .collection("rooms")
                 .doc(roomId)
@@ -87,8 +90,8 @@ class GameplayService {
     });
   }
 
-  static void roleRandomizer(String roomId) {
-    FirebaseFirestore.instance
+  static Future<void> roleRandomizer(String roomId) {
+    return FirebaseFirestore.instance
         .collection("rooms")
         .doc(roomId)
         .get()
