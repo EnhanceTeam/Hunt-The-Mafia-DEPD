@@ -18,22 +18,17 @@ class _GamePageState extends State<GamePage> {
     final String nickname = args.nickname;
     final String roomId = args.roomId;
 
-    @override
-    void initState() {
-      super.initState();
-
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        await FutureBuilder(
-            future: GameplayService.showPlayerRole(nickname, roomId, context),
-            builder: ((context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return snapshot.data!;
-              } else {
-                return CircularProgressIndicator();
-              }
-            }));
-      });
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await FutureBuilder(
+          future: GameplayService.showPlayerRole(nickname, roomId, context),
+          builder: ((context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return snapshot.data!;
+            } else {
+              return CircularProgressIndicator();
+            }
+          }));
+    });
 
     return Scaffold(
         body: SafeArea(
