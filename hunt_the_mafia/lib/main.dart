@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
         routes: {
           // DummyPage.routeName: (context) => const DummyPage(),
           MainMenuPage.routeName: (context) => const MainMenuPage(),
+          ProfilePage.routeName: (context) => const ProfilePage(),
           ShopPage.routeName: (context) => const ShopPage(),
           PreparationPage.routeName: (context) => const PreparationPage(),
           GameRoomPage.routeName: (context) => const GameRoomPage(),
