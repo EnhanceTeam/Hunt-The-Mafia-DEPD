@@ -1,23 +1,42 @@
 part of 'widgets.dart';
 
 class GameDialog {
-  static AlertDialog guessDialog({required BuildContext context}) {
+  static AlertDialog guessDialog(
+      {required BuildContext context,
+      required String roomId,
+      required String nickname}) {
+    final textController = TextEditingController();
+    var civilianWord = "";
+    var guessWord = "";
+    var nickname = "aa";
+
     return AlertDialog(
       title: const Text("You are Mr. White. Guess the word"),
-      content: const TextField(
-        decoration: InputDecoration(hintText: "Guess here..."),
+      content: TextFormField(
+        decoration: const InputDecoration(hintText: "Guess here..."),
+        controller: textController,
       ),
       actions: [
         TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              
+              // Dummy Data
+              // civilianWord = GameplayService.getCivilianWord(roomId);
+              civilianWord = "";
+
+              guessWord = textController.text;
+              GameplayService.checkGuessWord(
+                  context, guessWord, civilianWord, nickname);
             },
             child: Text("Submit"))
       ],
     );
   }
 
-  static AlertDialog winDialog({required BuildContext context}) {
+  static AlertDialog winDialog(
+      {required BuildContext context,
+      required String text1,
+      required String text2}) {
     return AlertDialog(
       title: const Text("Congratulations!"),
       content: Wrap(children: [
@@ -25,8 +44,8 @@ class GameDialog {
           child: Column(
             children: [
               Lottie.asset("assets/lottie/champion.json", width: 200),
-              Text("All Mafias have been defeated"),
-              Text("Civillians win!"),
+              Text(text1),
+              Text(text2),
             ],
           ),
         ),
@@ -559,6 +578,25 @@ class GameDialog {
         ),
       ),
       content: Text('is describing their word',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 18, color: Colors.black)),
+    );
+  }
+
+  static AlertDialog wrongAnswerDialog(
+      {required BuildContext context, required String nickname}) {
+    return AlertDialog(
+      title: Text(
+        nickname,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+          fontFamily: "Poppins",
+        ),
+      ),
+      content: Text('Sorry Your Answer is Wrong',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 18, color: Colors.black)),
     );

@@ -147,4 +147,41 @@ class GameplayService {
       }
     });
   }
+
+  static String getCivilianWord(String roomId) {
+    var civilianWord = "";
+    FirebaseFirestore.instance
+        .collection("rooms")
+        .doc(roomId)
+        .collection("players")
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        if (element.get("role").toString() == "civilian") {
+          civilianWord = element.get("word").toString();
+        }
+      });
+      return civilianWord;
+    });
+    return civilianWord;
+  }
+
+  static void checkGuessWord(BuildContext context, String guess,
+      String civilianWord, String nickname) {
+    if (guess == civilianWord) {
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: ((context) => GameDialog.winDialog(
+              context: context,
+              text1: "${nickname} Guess is Correct !",
+              text2: "Mr White Wins")));
+    } else {
+      showDialog(
+          barrierDismissible: true,
+          context: context,
+          builder: ((context) => GameDialog.wrongAnswerDialog(
+              context: context, nickname: nickname)));
+    }
+  }
 }
