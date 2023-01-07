@@ -25,19 +25,17 @@ class _ShopPageState extends State<ShopPage> {
             children: const [
               ShopItemCard(
                 title: 'More players',
-                description: 'Description',
-              ),
-              ShopItemCard(
-                title: 'More avatars',
-                description: 'Description',
-              ),
-              ShopItemCard(
-                title: 'Dark theme',
-                description: 'Description',
+                description: 'Much larger game room up to 30 peoples.' +
+                    ' Play with more friends',
+                price: "Rp. 20.000",
+                imageUrl: "morepeople_silhouette",
               ),
               ShopItemCard(
                 title: 'Animal words collection',
-                description: 'Description',
+                description:
+                    'Play another exclusive words' + 'Pack : Zoo & Animals',
+                price: "Rp. 8.000",
+                imageUrl: "animal_silhouette.svg",
               ),
             ],
           ),
