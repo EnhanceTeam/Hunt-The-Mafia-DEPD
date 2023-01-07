@@ -82,6 +82,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                               textColor: Colors.white,
                               fontSize: 16.0);
                         });
+                        Navigator.pushReplacementNamed(context, ProfilePage.routeName);
                       },
                       child: const Icon(
                         Icons.person,
