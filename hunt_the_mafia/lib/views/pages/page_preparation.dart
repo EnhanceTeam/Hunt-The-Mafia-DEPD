@@ -245,30 +245,45 @@ class _PreparationPageState extends State<PreparationPage> {
                 label: 'Start Game',
                 maxSize: true,
                 onPressed: () {
-                  RoleCountService.addRole(
-                      args.roomId, "civilian_count", _civilianCount);
-                  RoleCountService.addRole(
-                      args.roomId, "mafia_count", _mafiaCount);
-                  RoleCountService.addRole(
-                      args.roomId, "mr_white_count", _mrWhiteCount);
-                  RoleCountService.addRole(
-                      args.roomId, "mr_black_count", _mrBlackCount);
+                  _totalCount = _civilianCount +
+                      _mafiaCount +
+                      _mrWhiteCount +
+                      _mrBlackCount;
 
-                  GameplayService.roleRandomizer(args.roomId).then((value) {
-                    GameplayService.wordRandomizer(args.roomId).then((value) {
-                      GameplayService.setPlayerTurns(args.roomId).then(
-                          (value) => FirebaseFirestore.instance
-                                  .collection("rooms")
-                                  .doc(args.roomId)
-                                  .update({
-                                "gameStart": true,
-                                "preparation": false
-                              }).then((value) {
-                                GameplayService.showPlayerRole(
-                                    args.nickname, args.roomId, context);
-                              }));
+                  if (_totalCount == args.playerCount) {
+                    RoleCountService.addRole(
+                        args.roomId, "civilian_count", _civilianCount);
+                    RoleCountService.addRole(
+                        args.roomId, "mafia_count", _mafiaCount);
+                    RoleCountService.addRole(
+                        args.roomId, "mr_white_count", _mrWhiteCount);
+                    RoleCountService.addRole(
+                        args.roomId, "mr_black_count", _mrBlackCount);
+
+                    GameplayService.roleRandomizer(args.roomId).then((value) {
+                      GameplayService.wordRandomizer(args.roomId).then((value) {
+                        GameplayService.setPlayerTurns(args.roomId)
+                            .then(((value) {
+                          FirebaseFirestore.instance
+                              .collection("rooms")
+                              .doc(args.roomId)
+                              .update({
+                            "gameStart": true,
+                            "preparation": false
+                          }).then((value) {
+                            GameplayService.showPlayerRole(
+                                args.nickname, args.roomId, context);
+                          });
+                        }));
+                      });
                     });
-                  });
+                  } else {
+                    Fluttertoast.showToast(
+                      msg: "Insufficient roles",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                    );
+                  }
                 },
               )
             ],
