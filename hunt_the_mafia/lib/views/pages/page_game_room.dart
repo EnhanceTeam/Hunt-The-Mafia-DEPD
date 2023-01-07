@@ -248,17 +248,6 @@ class _GameRoomPageState extends State<GameRoomPage> {
                                       args.roomId,
                                       _scaffoldKey.currentContext!);
                                 });
-
-                                // Navigator.pushNamedAndRemoveUntil(
-                                //   context,
-                                //   GamePage.routeName,
-                                //   (route) => false,
-                                //   arguments: GamePageArguments(
-                                //     args.roomId,
-                                //     args.nickname,
-                                //   ),
-                                // );
-                                // });
                               }
                             }
 
