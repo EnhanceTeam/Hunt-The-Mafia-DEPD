@@ -68,13 +68,16 @@ class _MainMenuPageState extends State<MainMenuPage> {
                 alignment: Alignment.topCenter,
                 width: double.infinity,
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Icon(
-                      Icons.language,
-                      color: Const.baseColor,
-                      size: 45,
+                    RawMaterialButton(
+                      onPressed: () {},
+                      child: const Icon(
+                        Icons.person,
+                        color: Const.baseColor,
+                        size: 42,
+                      ),
                     ),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.60),
                     RawMaterialButton(
                       onPressed: () {
                         Navigator.pushNamed(context, SettingPage.routeName);
@@ -82,7 +85,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                       child: const Icon(
                         Icons.settings,
                         color: Const.baseColor,
-                        size: 45,
+                        size: 42,
                       ),
                     )
                   ],
