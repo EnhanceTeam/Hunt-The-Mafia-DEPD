@@ -1,6 +1,101 @@
 part of 'widgets.dart';
 
 class GameDialog {
+  static StatefulBuilder votingDialog(
+      {required BuildContext context,
+      required List<String> players,
+      required String roomId}) {
+    // final ctrlNickname = TextEditingController();
+    // final _formKey = GlobalKey<FormState>();
+    var selectedPlayer = null;
+
+    return StatefulBuilder(
+      builder: ((context, setState) {
+        return AlertDialog(
+          title: const Text("Who to Vote?"),
+          content: Wrap(children: [
+            Center(
+                child: Container(
+              height: 220,
+              width: 330,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 250,
+                    height: 75,
+                    child: Form(
+                        child: DropdownButton(
+                            value: selectedPlayer,
+                            hint: Text("Select a player..."),
+                            items: players
+                                .map((player) => DropdownMenuItem(
+                                    value: player, child: Text(player)))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                selectedPlayer = value.toString();
+                              });
+                            })),
+                  ),
+                  SizedBox(
+                    width: 250,
+                    height: 20,
+                  ),
+                  SizedBox(
+                    width: 150,
+                    height: 50,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: (RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          )),
+                          backgroundColor: Colors.black,
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                          textStyle: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold)),
+                      onPressed: (() {
+                        // todo: create room and change page to room page
+                        if (selectedPlayer == "None" ||
+                            selectedPlayer.isEmpty ||
+                            selectedPlayer == null) {
+                          Fluttertoast.showToast(
+                              msg: "Selected player cannot be empty!",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        } else {
+                          // todo: check if nickname role is mr white or not
+                          GameplayService.voteProcess(selectedPlayer, roomId);
+                          // Fluttertoast.showToast(
+                          //     msg: "Successful",
+                          //     toastLength: Toast.LENGTH_SHORT,
+                          //     gravity: ToastGravity.BOTTOM,
+                          //     timeInSecForIosWeb: 1,
+                          //     backgroundColor: Colors.green,
+                          //     textColor: Colors.white,
+                          //     fontSize: 16.0);
+                        }
+                      }),
+                      child: const Text(
+                        'Vote!',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )),
+          ]),
+        );
+      }),
+    );
+  }
+
   static AlertDialog guessDialog({required BuildContext context}) {
     return AlertDialog(
       title: const Text("You are Mr. White. Guess the word"),
@@ -495,10 +590,7 @@ class GameDialog {
                 context,
                 GamePage.routeName,
                 (route) => false,
-                arguments: GamePageArguments(
-                  roomCode,
-                  nickname,
-                ),
+                arguments: GamePageArguments(roomCode, nickname),
               );
             },
             child: const Text("OK"))

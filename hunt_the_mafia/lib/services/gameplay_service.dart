@@ -1,6 +1,82 @@
 part of "services.dart";
 
 class GameplayService {
+  static void voteProcess(String votedPlayer, String roomId) {
+    FirebaseFirestore.instance
+        .collection("rooms")
+        .doc(roomId)
+        .collection("players")
+        .doc(votedPlayer)
+        .update({"voted": true}).then((value) {
+      FirebaseFirestore.instance
+          .collection("rooms")
+          .doc(roomId)
+          .collection("players")
+          .doc(votedPlayer)
+          .get()
+          .then((value) {
+        if (value.get("role") == "mr_white") {
+          // todo: show guess pop up
+
+        }
+      });
+    });
+  }
+
+  static Future<List<String>> getPlayers(String roomId) async {
+    return await FirebaseFirestore.instance
+        .collection("rooms")
+        .doc(roomId)
+        .collection("players")
+        .get()
+        .then((value) => value.docs.map((e) => e.id).toList());
+  }
+
+  static String convertNumToTurns(var num) {
+    if (num == 1) {
+      return "1st";
+    } else if (num == 2) {
+      return "2nd";
+    } else if (num == 3) {
+      return "3rd";
+    } else {
+      return num.toString() + "th";
+    }
+  }
+
+  static Future<void> setPlayerTurns(String roomId) {
+    return FirebaseFirestore.instance
+        .collection("rooms")
+        .doc(roomId)
+        .collection("players")
+        .get()
+        .then((value) {
+      var turns = [];
+      var valueLen = value.docs.length;
+
+      for (var i = 0; i < valueLen; i++) {
+        turns.add(i + 1);
+      }
+
+      turns.shuffle();
+
+      var playerTurn = {};
+
+      value.docs.forEach((element) {
+        FirebaseFirestore.instance
+            .collection("rooms")
+            .doc(roomId)
+            .collection("players")
+            .doc(element.id)
+            .update({
+          "turn": turns[0],
+        });
+
+        turns.removeAt(0);
+      });
+    });
+  }
+
   static void showPlayerRole(
       String nickname, String roomId, BuildContext context) {
     FirebaseFirestore.instance

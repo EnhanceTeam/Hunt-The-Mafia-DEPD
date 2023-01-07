@@ -256,16 +256,17 @@ class _PreparationPageState extends State<PreparationPage> {
 
                   GameplayService.roleRandomizer(args.roomId).then((value) {
                     GameplayService.wordRandomizer(args.roomId).then((value) {
-                      FirebaseFirestore.instance
-                          .collection("rooms")
-                          .doc(args.roomId)
-                          .update({
-                        "gameStart": true,
-                        "preparation": false
-                      }).then((value) {
-                        GameplayService.showPlayerRole(
-                            args.nickname, args.roomId, context);
-                      });
+                      GameplayService.setPlayerTurns(args.roomId).then(
+                          (value) => FirebaseFirestore.instance
+                                  .collection("rooms")
+                                  .doc(args.roomId)
+                                  .update({
+                                "gameStart": true,
+                                "preparation": false
+                              }).then((value) {
+                                GameplayService.showPlayerRole(
+                                    args.nickname, args.roomId, context);
+                              }));
                     });
                   });
                 },
