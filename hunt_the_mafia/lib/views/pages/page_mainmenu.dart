@@ -71,8 +71,17 @@ class _MainMenuPageState extends State<MainMenuPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     RawMaterialButton(
-                      onPressed: () {
-
+                      onPressed: () async {
+                        await AuthService.signInWithGoogle().then((value) {
+                          Fluttertoast.showToast(
+                              msg: "Welcome back ${value.user!.displayName}",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.green,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        });
                       },
                       child: const Icon(
                         Icons.person,
