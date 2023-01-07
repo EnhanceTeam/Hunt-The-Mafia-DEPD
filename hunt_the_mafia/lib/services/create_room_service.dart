@@ -12,7 +12,9 @@ class CreateRoomService {
     return roomsRef.doc(roomId).set({
       "hostname": nickname,
       "preparation": false,
-      "gameStart": false
+      "gameStart": false,
+      "mr_white_guessing": false,
+      "winner": "None"
     }).then((value) {
       roomsRef.doc(roomId).collection("players").doc(nickname).set({
         "role": null,

@@ -33,13 +33,13 @@ class _GamePageState extends State<GamePage> {
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                     )),
-                FutureBuilder(
-                  future: FirebaseFirestore.instance
+                StreamBuilder(
+                  stream: FirebaseFirestore.instance
                       .collection("rooms")
                       .doc(roomId)
                       .collection("players")
                       .doc(nickname)
-                      .get(),
+                      .snapshots(),
                   builder: (_, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return CircularProgressIndicator();
@@ -105,59 +105,130 @@ class _GamePageState extends State<GamePage> {
                                               Text(snapshot.data!.docs
                                                   .elementAt(i)
                                                   .id
-                                                  .toString())
+                                                  .toString()),
+                                              snapshot.data!.docs
+                                                      .elementAt(i)
+                                                      .get("voted")
+                                                  ? Text(
+                                                      "Voted: " +
+                                                          snapshot.data!.docs
+                                                              .elementAt(i)
+                                                              .get("role"),
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )
+                                                  : Text(""),
                                             ],
                                           )),
                                   ],
                                 ),
-                                FutureBuilder(
-                                    future: FirebaseFirestore.instance
+                                StreamBuilder(
+                                    stream: FirebaseFirestore.instance
                                         .collection("rooms")
                                         .doc(roomId)
-                                        .get(),
-                                    builder: (_, snapshot) {
-                                      if (snapshot.connectionState ==
+                                        .snapshots(),
+                                    builder: (_, snapshotHost) {
+                                      if (snapshotHost.connectionState ==
                                           ConnectionState.waiting) {
                                         return CircularProgressIndicator();
                                       } else {
                                         var hostname =
-                                            snapshot.data!.get("hostname");
+                                            snapshotHost.data!.get("hostname");
+                                        var winner =
+                                            snapshotHost.data!.get("winner");
 
-                                        if (nickname != hostname) {
-                                          return Text(
-                                              "Only host can start the voting session!");
+                                        if (winner == "None") {
+                                          if (nickname != hostname) {
+                                            if (snapshotHost.data!
+                                                .get("mr_white_guessing")) {
+                                              return Text(
+                                                  "Mr. White is guessing");
+                                            } else {
+                                              return Text(
+                                                  "Only host can start the voting session!");
+                                            }
+
+                                            // return FutureBuilder(
+                                            //     future: FirebaseFirestore.instance
+                                            //         .collection("rooms")
+                                            //         .doc(roomId)
+                                            //         .get(),
+                                            //     builder: ((_, snapshot) {
+                                            //       if (snapshot.connectionState ==
+                                            //           ConnectionState.waiting) {
+                                            //         return CircularProgressIndicator();
+                                            //       } else {
+                                            //         if (snapshot.data!.get(
+                                            //             "mr_white_guessing")) {
+                                            //           return Text(
+                                            //               "Mr. White is guessing");
+                                            //         } else {
+                                            //           return Text(
+                                            //               "Only host can start the voting session!");
+                                            //         }
+                                            //       }
+                                            //     }));
+                                          } else {
+                                            return StreamBuilder(
+                                                stream: FirebaseFirestore
+                                                    .instance
+                                                    .collection("rooms")
+                                                    .doc(roomId)
+                                                    .collection("players")
+                                                    .snapshots(),
+                                                builder: (_, snapshot) {
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
+                                                    return CircularProgressIndicator();
+                                                  } else {
+                                                    return ElevatedButton(
+                                                        onPressed: () {
+                                                          List<String>
+                                                              playersList = [];
+
+                                                          snapshot.data!.docs
+                                                              .forEach(
+                                                                  (element) {
+                                                            if (element.get(
+                                                                    "voted") ==
+                                                                false) {
+                                                              playersList.add(
+                                                                  element.id);
+                                                            }
+                                                          });
+
+                                                          showDialog(
+                                                              context: context,
+                                                              builder: ((context) =>
+                                                                  GameDialog.votingDialog(
+                                                                      context:
+                                                                          context,
+                                                                      roomId:
+                                                                          roomId,
+                                                                      players:
+                                                                          playersList)));
+                                                        },
+                                                        child:
+                                                            Text("Vote Now!"));
+                                                  }
+                                                });
+                                          }
                                         } else {
-                                          return FutureBuilder(
-                                              future: FirebaseFirestore.instance
-                                                  .collection("rooms")
-                                                  .doc(roomId)
-                                                  .collection("players")
-                                                  .get(),
-                                              builder: (_, snapshot) {
-                                                if (snapshot.connectionState ==
-                                                    ConnectionState.waiting) {
-                                                  return CircularProgressIndicator();
-                                                } else {
-                                                  return ElevatedButton(
-                                                      onPressed: () {
-                                                        showDialog(
-                                                            context: context,
-                                                            builder: ((context) =>
-                                                                GameDialog.votingDialog(
-                                                                    context:
-                                                                        context,
-                                                                    roomId:
-                                                                        roomId,
-                                                                    players: snapshot
-                                                                        .data!
-                                                                        .docs
-                                                                        .map((e) =>
-                                                                            e.id)
-                                                                        .toList())));
-                                                      },
-                                                      child: Text("Vote Now!"));
-                                                }
-                                              });
+                                          WidgetsBinding.instance
+                                              .addPostFrameCallback((_) {
+                                            // Add Your Code here.
+                                            showDialog(
+                                                context: context,
+                                                builder: ((context) {
+                                                  return GameDialog.winDialog(
+                                                      context: context,
+                                                      winner: winner);
+                                                }));
+                                          });
+
+                                          return Text("Game Over");
                                         }
                                       }
                                     }),
