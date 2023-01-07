@@ -71,7 +71,9 @@ class _MainMenuPageState extends State<MainMenuPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     RawMaterialButton(
-                      onPressed: () {},
+                      onPressed: () {
+
+                      },
                       child: const Icon(
                         Icons.person,
                         color: Const.baseColor,
