@@ -21,7 +21,10 @@ class _PreparationPageState extends State<PreparationPage> {
     final args =
         ModalRoute.of(context)!.settings.arguments as PreparationPageArguments;
 
+    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
     return Scaffold(
+      key: _scaffoldKey,
       body: SafeArea(
         minimum: const EdgeInsets.all(Space.large),
         child: Container(
@@ -271,8 +274,8 @@ class _PreparationPageState extends State<PreparationPage> {
                             "gameStart": true,
                             "preparation": false
                           }).then((value) {
-                            GameplayService.showPlayerRole(
-                                args.nickname, args.roomId, context);
+                            GameplayService.showPlayerRole(args.nickname,
+                                args.roomId, _scaffoldKey.currentContext!);
                           });
                         }));
                       });
