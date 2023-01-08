@@ -2,7 +2,7 @@ part of 'widgets.dart';
 
 class GameDialog {
   static StatefulBuilder votingDialog(
-      {required BuildContext context,
+      {required var context,
       required List<String> players,
       required String roomId}) {
     // final ctrlNickname = TextEditingController();
@@ -116,7 +116,7 @@ class GameDialog {
                     roomId, ctrlGuessWord.text.toString(), context);
               } else {
                 Fluttertoast.showToast(
-                    msg: "Word cannot be empty!",
+                    msg: "Guess word cannot be empty!",
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM,
                     timeInSecForIosWeb: 1,
