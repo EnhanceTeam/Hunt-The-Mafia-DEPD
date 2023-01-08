@@ -99,7 +99,9 @@ class _MainMenuPageState extends State<MainMenuPage> {
           child: FloatingActionButton(
               elevation: 8,
               backgroundColor: Const.baseColor,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, ShopPage.routeName);
+              },
               child: Icon(
                 Icons.shopping_cart,
                 color: Colors.white,
