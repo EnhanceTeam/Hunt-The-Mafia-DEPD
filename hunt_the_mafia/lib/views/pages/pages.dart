@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -19,3 +21,4 @@ part 'page_shop.dart';
 part 'page_setting.dart';
 part 'page_preparation.dart';
 part 'page_guide.dart';
+part 'page_profile.dart';

@@ -1,5 +1,6 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:hunt_the_mafia/services/services.dart';
 import 'package:hunt_the_mafia/shared/global_context_service.dart';
 import 'package:hunt_the_mafia/views/pages/pages.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -28,10 +29,12 @@ class MyApp extends StatelessWidget {
         theme: MyTheme.lightTheme(lightColorScheme),
         darkTheme: MyTheme.darkTheme(darkColorScheme),
         navigatorKey: GlobalContextService.navigatorKey,
-        initialRoute: MainMenuPage.routeName,
+        home: AuthService().handleAuthState(),
+        // initialRoute: MainMenuPage.routeName,
         routes: {
           // DummyPage.routeName: (context) => const DummyPage(),
           MainMenuPage.routeName: (context) => const MainMenuPage(),
+          ProfilePage.routeName: (context) => const ProfilePage(),
           ShopPage.routeName: (context) => const ShopPage(),
           PreparationPage.routeName: (context) => const PreparationPage(),
           GameRoomPage.routeName: (context) => const GameRoomPage(),

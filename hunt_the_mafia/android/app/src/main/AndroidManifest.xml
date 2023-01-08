@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.enhance.hunt_the_mafia">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    
    <application
         android:label="hunt_the_mafia"
         android:name="${applicationName}"
