@@ -57,7 +57,14 @@ class _GameRoomPageState extends State<GameRoomPage> {
             FirebaseFirestore.instance
                 .collection("rooms")
                 .doc(args.roomId)
-                .update({"hostname": value.docs[0].id});
+                .get()
+                .then((value) {
+              if (value.get("hostname") == args.nickname)
+                FirebaseFirestore.instance
+                    .collection("rooms")
+                    .doc(args.roomId)
+                    .update({"hostname": value.get("players").first});
+            });
           }
         });
         Navigator.pop(context, false);
