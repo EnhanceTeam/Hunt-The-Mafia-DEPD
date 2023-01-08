@@ -1,6 +1,235 @@
 part of "services.dart";
 
 class GameplayService {
+  static void guessProcess(
+      String roomId, String guessWord, BuildContext context) {
+    FirebaseFirestore.instance
+        .collection("rooms")
+        .doc(roomId)
+        .collection("players")
+        .get()
+        .then((value) {
+      var answer = value.docs
+          .firstWhere((element) => element.get("role") == "civilian")
+          .get("word")
+          .toString()
+          .toLowerCase();
+
+      FirebaseFirestore.instance.collection("rooms").doc(roomId).update({
+        "mr_white_guessing": false,
+      });
+
+      if (guessWord.toLowerCase() == answer) {
+        FirebaseFirestore.instance.collection("rooms").doc(roomId).update({
+          "winner": "mr_white",
+        }).then((value) {
+          // todo: show mr_white win dialog
+          showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: ((context) {
+                return GameDialog.winDialog(
+                    context: context, winner: "Mr White");
+              }));
+        });
+      } else {
+        Fluttertoast.showToast(
+            msg: "Wrong guess!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        Navigator.pop(context);
+      }
+    });
+  }
+
+  static void voteProcess(String votedPlayer, String roomId, var context) {
+    FirebaseFirestore.instance
+        .collection("rooms")
+        .doc(roomId)
+        .collection("players")
+        .doc(votedPlayer)
+        .update({"voted": true}).then((value) {
+      FirebaseFirestore.instance
+          .collection("rooms")
+          .doc(roomId)
+          .collection("players")
+          .doc(votedPlayer)
+          .get()
+          .then((value) {
+        var role = value.get("role");
+
+        if (role == "mr_white") {
+          Fluttertoast.showToast(
+              msg: "Mr. White is voted out!",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0);
+
+          // todo: show guess pop up
+
+          FirebaseFirestore.instance
+              .collection("rooms")
+              .doc(roomId)
+              .update({"mr_white_guessing": true});
+        } else {
+          if (role == "mr_black") {
+            Fluttertoast.showToast(
+                msg: "Mr. Black is voted out!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0);
+          } else if (role == "civilian") {
+            Fluttertoast.showToast(
+                msg: "Civilian is voted out!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0);
+          } else if (role == "mafia") {
+            Fluttertoast.showToast(
+                msg: "Mafia is voted out!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0);
+          }
+        }
+
+        Navigator.pop(context);
+
+        FirebaseFirestore.instance
+            .collection("rooms")
+            .doc(roomId)
+            .get()
+            .then((value) {
+          if (value.get("winner") == "None") {
+            FirebaseFirestore.instance
+                .collection("rooms")
+                .doc(roomId)
+                .collection("players")
+                .get()
+                .then((value) {
+              var civilianCount = 0;
+              var mafiaCount = 0;
+              var mrBlackCount = 0;
+
+              value.docs.forEach((element) {
+                if (element["role"] == "civilian" &&
+                    element["voted"] == false) {
+                  civilianCount++;
+                } else if (element["role"] == "mafia" &&
+                    element["voted"] == false) {
+                  mafiaCount++;
+                } else if (element["role"] == "mr_black") {
+                  mrBlackCount++;
+                }
+              });
+
+              if (civilianCount == 1) {
+                FirebaseFirestore.instance
+                    .collection("rooms")
+                    .doc(roomId)
+                    .update({"winner": "mafia"});
+              } else {
+                if (mafiaCount == 0) {
+                  if (mrBlackCount > 0) {
+                    FirebaseFirestore.instance
+                        .collection("rooms")
+                        .doc(roomId)
+                        .update({"winner": "civilian and mr_black"});
+                  } else {
+                    FirebaseFirestore.instance
+                        .collection("rooms")
+                        .doc(roomId)
+                        .update({"winner": "civilian"});
+                  }
+                }
+              }
+            });
+          }
+        });
+      });
+    });
+  }
+
+  static Future<List<String>> getPlayers(String roomId) async {
+    return await FirebaseFirestore.instance
+        .collection("rooms")
+        .doc(roomId)
+        .collection("players")
+        .get()
+        .then((value) {
+      List<String> players = [];
+
+      value.docs.forEach((element) {
+        if (element.get("voted") == true) {
+          players.add(element.id);
+        }
+      });
+
+      return players;
+    });
+  }
+
+  static String convertNumToTurns(var num) {
+    if (num == 1) {
+      return "1st";
+    } else if (num == 2) {
+      return "2nd";
+    } else if (num == 3) {
+      return "3rd";
+    } else {
+      return num.toString() + "th";
+    }
+  }
+
+  static Future<void> setPlayerTurns(String roomId) {
+    return FirebaseFirestore.instance
+        .collection("rooms")
+        .doc(roomId)
+        .collection("players")
+        .get()
+        .then((value) {
+      var turns = [];
+      var valueLen = value.docs.length;
+
+      for (var i = 0; i < valueLen; i++) {
+        turns.add(i + 1);
+      }
+
+      turns.shuffle();
+
+      var playerTurn = {};
+
+      value.docs.forEach((element) {
+        FirebaseFirestore.instance
+            .collection("rooms")
+            .doc(roomId)
+            .collection("players")
+            .doc(element.id)
+            .update({
+          "turn": turns[0],
+        });
+
+        turns.removeAt(0);
+      });
+    });
+  }
+
   static void showPlayerRole(
       String nickname, String roomId, BuildContext context) {
     FirebaseFirestore.instance
@@ -138,6 +367,7 @@ class GameplayService {
                   .doc(element.id)
                   .update({
                 "role": availableRoles.elementAt(randomRole),
+                "voted": false
               });
 
               availableRoles.removeAt(randomRole);

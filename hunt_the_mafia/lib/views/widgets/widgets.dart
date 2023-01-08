@@ -6,6 +6,8 @@ import 'package:hunt_the_mafia/theme/shape.dart';
 import 'package:hunt_the_mafia/views/pages/pages.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
 
 import '../../shared/shared.dart';
 import '../../theme/space.dart';

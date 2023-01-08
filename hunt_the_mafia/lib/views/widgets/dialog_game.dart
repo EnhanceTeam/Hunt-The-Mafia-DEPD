@@ -1,23 +1,137 @@
 part of 'widgets.dart';
 
 class GameDialog {
-  static AlertDialog guessDialog({required BuildContext context}) {
+  static StatefulBuilder votingDialog(
+      {required var context,
+      required List<String> players,
+      required String roomId}) {
+    // final ctrlNickname = TextEditingController();
+    // final _formKey = GlobalKey<FormState>();
+    var selectedPlayer = null;
+
+    return StatefulBuilder(
+      builder: ((context, setState) {
+        return AlertDialog(
+          title: const Text("Who to Vote?"),
+          content: Wrap(children: [
+            Center(
+                child: Container(
+              height: 220,
+              width: 330,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 250,
+                    height: 75,
+                    child: Form(
+                        child: DropdownButton(
+                            value: selectedPlayer,
+                            hint: Text("Select a player..."),
+                            items: players
+                                .map((player) => DropdownMenuItem(
+                                    value: player, child: Text(player)))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                selectedPlayer = value.toString();
+                              });
+                            })),
+                  ),
+                  SizedBox(
+                    width: 250,
+                    height: 20,
+                  ),
+                  SizedBox(
+                    width: 150,
+                    height: 50,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: (RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          )),
+                          backgroundColor: Colors.black,
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                          textStyle: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold)),
+                      onPressed: (() {
+                        // todo: create room and change page to room page
+                        if (selectedPlayer.isEmpty || selectedPlayer == null) {
+                          Fluttertoast.showToast(
+                              msg: "Selected player cannot be empty!",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        } else {
+                          // todo: check if nickname role is mr white or not
+                          GameplayService.voteProcess(
+                              selectedPlayer, roomId, context);
+                        }
+                      }),
+                      child: const Text(
+                        'Vote!',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )),
+          ]),
+        );
+      }),
+    );
+  }
+
+  static AlertDialog guessDialog({
+    required BuildContext context,
+    required String roomId,
+  }) {
+    final ctrlGuessWord = TextEditingController();
+    final _formKey = GlobalKey<FormState>();
+
     return AlertDialog(
       title: const Text("You are Mr. White. Guess the word"),
-      content: const TextField(
-        decoration: InputDecoration(hintText: "Guess here..."),
-      ),
+      content: Form(
+          child: TextFormField(
+        key: _formKey,
+        controller: ctrlGuessWord,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: EdgeInsets.all(16),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
+          hintText: 'Enter the word...',
+        ),
+      )),
       actions: [
         TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              if (ctrlGuessWord != null || ctrlGuessWord.text.isNotEmpty) {
+                GameplayService.guessProcess(
+                    roomId, ctrlGuessWord.text.toString(), context);
+              } else {
+                Fluttertoast.showToast(
+                    msg: "Guess word cannot be empty!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 16.0);
+              }
             },
             child: Text("Submit"))
       ],
     );
   }
 
-  static AlertDialog winDialog({required BuildContext context}) {
+  static AlertDialog winDialog(
+      {required BuildContext context, required String winner}) {
     return AlertDialog(
       title: const Text("Congratulations!"),
       content: Wrap(children: [
@@ -25,8 +139,7 @@ class GameDialog {
           child: Column(
             children: [
               Lottie.asset("assets/lottie/champion.json", width: 200),
-              Text("All Mafias have been defeated"),
-              Text("Civillians win!"),
+              Text("$winner win!"),
             ],
           ),
         ),
@@ -35,6 +148,11 @@ class GameDialog {
         TextButton(
             onPressed: () {
               Navigator.of(context).pop();
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                MainMenuPage.routeName,
+                (route) => false,
+              );
             },
             child: Text("Hooray!"))
       ],
@@ -495,10 +613,7 @@ class GameDialog {
                 context,
                 GamePage.routeName,
                 (route) => false,
-                arguments: GamePageArguments(
-                  roomCode,
-                  nickname,
-                ),
+                arguments: GamePageArguments(roomCode, nickname),
               );
             },
             child: const Text("OK"))

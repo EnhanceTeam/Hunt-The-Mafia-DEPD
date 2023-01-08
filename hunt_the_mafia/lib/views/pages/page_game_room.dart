@@ -222,49 +222,38 @@ class _GameRoomPageState extends State<GameRoomPage> {
                               .doc(args.roomId)
                               .snapshots(),
                           builder: (_, snapshotRoomReadiness) {
-                            if (snapshotRoomReadiness.hasError) {
-                              return Text(
-                                  "Error = ${snapshotRoomReadiness.error}");
-                            } else if (snapshotRoomReadiness.hasData) {
+                            if (snapshotRoomReadiness.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            } else {
                               var preparationPhase = snapshotRoomReadiness.data!
                                   .get("preparation");
 
                               var gameStart =
                                   snapshotRoomReadiness.data!.get("gameStart");
 
-                              if (!preparationPhase && !gameStart) {
-                                return Text(
-                                    "Waiting for host to start the game");
-                              } else if (preparationPhase) {
+                              if (preparationPhase) {
                                 return Text(
                                     "Waiting for host in preparation phase");
                               } else if (gameStart) {
                                 // WidgetsBinding.instance
                                 //     .addPostFrameCallback((_) {
-                                Future.delayed(Duration(milliseconds: 2500),
-                                    () {
-                                  GameplayService.showPlayerRole(
-                                      args.nickname,
-                                      args.roomId,
-                                      _scaffoldKey.currentContext!);
-                                });
-
-                                // Navigator.pushNamedAndRemoveUntil(
-                                //   context,
-                                //   GamePage.routeName,
-                                //   (route) => false,
-                                //   arguments: GamePageArguments(
-                                //     args.roomId,
-                                //     args.nickname,
-                                //   ),
-                                // );
+                                // Future.delayed(Duration(milliseconds: 2500),
+                                //     () {
+                                GameplayService.showPlayerRole(args.nickname,
+                                    args.roomId, _scaffoldKey.currentContext!);
                                 // });
+
+                                return Text("Game Starting");
+                              } else {
+                                return Text(
+                                    "Waiting for host to start the game");
                               }
                             }
 
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
+                            // return const Center(
+                            //   child: CircularProgressIndicator(),
+                            // );
                           },
                         );
                       }
