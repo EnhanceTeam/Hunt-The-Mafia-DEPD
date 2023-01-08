@@ -170,61 +170,88 @@ class _GamePageState extends State<GamePage> {
                                             //       }
                                             //     }));
                                           } else {
-                                            return StreamBuilder(
-                                                stream: FirebaseFirestore
-                                                    .instance
-                                                    .collection("rooms")
-                                                    .doc(roomId)
-                                                    .collection("players")
-                                                    .snapshots(),
-                                                builder: (_, snapshot) {
-                                                  if (snapshot
-                                                          .connectionState ==
-                                                      ConnectionState.waiting) {
-                                                    return CircularProgressIndicator();
-                                                  } else {
-                                                    return ElevatedButton(
-                                                        onPressed: () {
-                                                          List<String>
-                                                              playersList = [];
+                                            if (snapshotHost.data!
+                                                .get("mr_white_guessing")) {
+                                              WidgetsBinding.instance
+                                                  .addPostFrameCallback((_) {
+                                                showDialog(
+                                                    barrierDismissible: false,
+                                                    context: context,
+                                                    builder: ((context) {
+                                                      return GameDialog
+                                                          .guessDialog(
+                                                              roomId: roomId,
+                                                              context: context);
+                                                    }));
+                                              });
 
-                                                          snapshot.data!.docs
-                                                              .forEach(
-                                                                  (element) {
-                                                            if (element.get(
-                                                                    "voted") ==
-                                                                false) {
-                                                              playersList.add(
-                                                                  element.id);
-                                                            }
-                                                          });
+                                              return Text(
+                                                  "Mr. White is guessing");
+                                            } else {
+                                              return StreamBuilder(
+                                                  stream: FirebaseFirestore
+                                                      .instance
+                                                      .collection("rooms")
+                                                      .doc(roomId)
+                                                      .collection("players")
+                                                      .snapshots(),
+                                                  builder: (_, snapshot) {
+                                                    if (snapshot
+                                                            .connectionState ==
+                                                        ConnectionState
+                                                            .waiting) {
+                                                      return CircularProgressIndicator();
+                                                    } else {
+                                                      return ElevatedButton(
+                                                          onPressed: () {
+                                                            List<String>
+                                                                playersList =
+                                                                [];
 
-                                                          showDialog(
-                                                              context: context,
-                                                              builder: ((context) =>
-                                                                  GameDialog.votingDialog(
-                                                                      context:
-                                                                          context,
-                                                                      roomId:
-                                                                          roomId,
-                                                                      players:
-                                                                          playersList)));
-                                                        },
-                                                        child:
-                                                            Text("Vote Now!"));
-                                                  }
-                                                });
+                                                            snapshot.data!.docs
+                                                                .forEach(
+                                                                    (element) {
+                                                              if (element.get(
+                                                                      "voted") ==
+                                                                  false) {
+                                                                playersList.add(
+                                                                    element.id);
+                                                              }
+                                                            });
+
+                                                            showDialog(
+                                                                context: _scaffoldKey
+                                                                    .currentContext!,
+                                                                builder: ((context) =>
+                                                                    GameDialog.votingDialog(
+                                                                        context:
+                                                                            context,
+                                                                        roomId:
+                                                                            roomId,
+                                                                        players:
+                                                                            playersList)));
+                                                          },
+                                                          child: Text(
+                                                              "Vote Now!"));
+                                                    }
+                                                  });
+                                            }
                                           }
                                         } else {
                                           WidgetsBinding.instance
                                               .addPostFrameCallback((_) {
                                             // Add Your Code here.
                                             showDialog(
+                                                barrierDismissible: false,
                                                 context: context,
                                                 builder: ((context) {
                                                   return GameDialog.winDialog(
                                                       context: context,
-                                                      winner: winner);
+                                                      winner: StringUtils
+                                                          .capitalize(winner
+                                                              .toString()
+                                                              .replaceAll(
+                                                                  "_", " ")));
                                                 }));
                                           });
 

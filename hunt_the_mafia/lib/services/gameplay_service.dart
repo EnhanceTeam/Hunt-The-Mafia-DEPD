@@ -9,28 +9,42 @@ class GameplayService {
         .collection("players")
         .get()
         .then((value) {
-      FirebaseFirestore.instance.collection("rooms").doc(roomId).update({
-        "mr_white_guessing": false,
-      });
-
       var answer = value.docs
           .firstWhere((element) => element.get("role") == "civilian")
           .get("word");
+
+      FirebaseFirestore.instance.collection("rooms").doc(roomId).update({
+        "mr_white_guessing": false,
+      });
 
       if (guessWord == answer) {
         FirebaseFirestore.instance.collection("rooms").doc(roomId).update({
           "winner": "mr_white",
         }).then((value) {
           // todo: show mr_white win dialog
+          showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: ((context) {
+                return GameDialog.winDialog(
+                    context: context, winner: "Mr White");
+              }));
         });
       } else {
+        Fluttertoast.showToast(
+            msg: "Wrong guess!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
         Navigator.pop(context);
       }
     });
   }
 
-  static void voteProcess(
-      String votedPlayer, String roomId, BuildContext context) {
+  static void voteProcess(String votedPlayer, String roomId, var context) {
     FirebaseFirestore.instance
         .collection("rooms")
         .doc(roomId)
@@ -61,13 +75,7 @@ class GameplayService {
           FirebaseFirestore.instance
               .collection("rooms")
               .doc(roomId)
-              .update({"mr_white_guessing": true}).then((value) => showDialog(
-                  barrierDismissible: false,
-                  context: context,
-                  builder: ((context) {
-                    return GameDialog.guessDialog(
-                        roomId: roomId, context: context);
-                  })));
+              .update({"mr_white_guessing": true});
         } else {
           if (role == "mr_black") {
             Fluttertoast.showToast(
@@ -115,6 +123,7 @@ class GameplayService {
                 .then((value) {
               var civilianCount = 0;
               var mafiaCount = 0;
+              var mrBlackCount = 0;
 
               value.docs.forEach((element) {
                 if (element["role"] == "civilian" &&
@@ -123,6 +132,8 @@ class GameplayService {
                 } else if (element["role"] == "mafia" &&
                     element["voted"] == false) {
                   mafiaCount++;
+                } else if (element["role"] == "mr_black") {
+                  mrBlackCount++;
                 }
               });
 
@@ -133,10 +144,17 @@ class GameplayService {
                     .update({"winner": "mafia"});
               } else {
                 if (mafiaCount == 0) {
-                  FirebaseFirestore.instance
-                      .collection("rooms")
-                      .doc(roomId)
-                      .update({"winner": "civilian"});
+                  if (mrBlackCount > 0) {
+                    FirebaseFirestore.instance
+                        .collection("rooms")
+                        .doc(roomId)
+                        .update({"winner": "civilian and mr_black"});
+                  } else {
+                    FirebaseFirestore.instance
+                        .collection("rooms")
+                        .doc(roomId)
+                        .update({"winner": "civilian"});
+                  }
                 }
               }
             });
