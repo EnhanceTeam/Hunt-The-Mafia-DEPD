@@ -443,7 +443,7 @@ class GameDialog {
                     );
                   }),
                   child: const Text(
-                    'Joinroom Game with Code',
+                    'Join Room',
                     style: TextStyle(color: Color(0xFF311A46)),
                   ),
                 ),
