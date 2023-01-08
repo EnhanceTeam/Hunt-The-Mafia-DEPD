@@ -2,7 +2,7 @@ part of 'widgets.dart';
 
 class GameDialog {
   static StatefulBuilder votingDialog(
-      {required BuildContext context,
+      {required var context,
       required List<String> players,
       required String roomId}) {
     // final ctrlNickname = TextEditingController();
@@ -57,9 +57,7 @@ class GameDialog {
                               fontSize: 15, fontWeight: FontWeight.bold)),
                       onPressed: (() {
                         // todo: create room and change page to room page
-                        if (selectedPlayer == "None" ||
-                            selectedPlayer.isEmpty ||
-                            selectedPlayer == null) {
+                        if (selectedPlayer.isEmpty || selectedPlayer == null) {
                           Fluttertoast.showToast(
                               msg: "Selected player cannot be empty!",
                               toastLength: Toast.LENGTH_SHORT,
@@ -70,15 +68,8 @@ class GameDialog {
                               fontSize: 16.0);
                         } else {
                           // todo: check if nickname role is mr white or not
-                          GameplayService.voteProcess(selectedPlayer, roomId);
-                          // Fluttertoast.showToast(
-                          //     msg: "Successful",
-                          //     toastLength: Toast.LENGTH_SHORT,
-                          //     gravity: ToastGravity.BOTTOM,
-                          //     timeInSecForIosWeb: 1,
-                          //     backgroundColor: Colors.green,
-                          //     textColor: Colors.white,
-                          //     fontSize: 16.0);
+                          GameplayService.voteProcess(
+                              selectedPlayer, roomId, context);
                         }
                       }),
                       child: const Text(
@@ -96,23 +87,51 @@ class GameDialog {
     );
   }
 
-  static AlertDialog guessDialog({required BuildContext context}) {
+  static AlertDialog guessDialog({
+    required BuildContext context,
+    required String roomId,
+  }) {
+    final ctrlGuessWord = TextEditingController();
+    final _formKey = GlobalKey<FormState>();
+
     return AlertDialog(
       title: const Text("You are Mr. White. Guess the word"),
-      content: const TextField(
-        decoration: InputDecoration(hintText: "Guess here..."),
-      ),
+      content: Form(
+          child: TextFormField(
+        key: _formKey,
+        controller: ctrlGuessWord,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: EdgeInsets.all(16),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
+          hintText: 'Enter the word...',
+        ),
+      )),
       actions: [
         TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              if (ctrlGuessWord != null || ctrlGuessWord.text.isNotEmpty) {
+                GameplayService.guessProcess(
+                    roomId, ctrlGuessWord.text.toString(), context);
+              } else {
+                Fluttertoast.showToast(
+                    msg: "Guess word cannot be empty!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 16.0);
+              }
             },
             child: Text("Submit"))
       ],
     );
   }
 
-  static AlertDialog winDialog({required BuildContext context}) {
+  static AlertDialog winDialog(
+      {required BuildContext context, required String winner}) {
     return AlertDialog(
       title: const Text("Congratulations!"),
       content: Wrap(children: [
@@ -120,8 +139,7 @@ class GameDialog {
           child: Column(
             children: [
               Lottie.asset("assets/lottie/champion.json", width: 200),
-              Text("All Mafias have been defeated"),
-              Text("Civillians win!"),
+              Text("$winner win!"),
             ],
           ),
         ),
@@ -130,6 +148,11 @@ class GameDialog {
         TextButton(
             onPressed: () {
               Navigator.of(context).pop();
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                MainMenuPage.routeName,
+                (route) => false,
+              );
             },
             child: Text("Hooray!"))
       ],
