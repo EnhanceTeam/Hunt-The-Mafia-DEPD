@@ -11,13 +11,15 @@ class GameplayService {
         .then((value) {
       var answer = value.docs
           .firstWhere((element) => element.get("role") == "civilian")
-          .get("word");
+          .get("word")
+          .toString()
+          .toLowerCase();
 
       FirebaseFirestore.instance.collection("rooms").doc(roomId).update({
         "mr_white_guessing": false,
       });
 
-      if (guessWord == answer) {
+      if (guessWord.toLowerCase() == answer) {
         FirebaseFirestore.instance.collection("rooms").doc(roomId).update({
           "winner": "mr_white",
         }).then((value) {

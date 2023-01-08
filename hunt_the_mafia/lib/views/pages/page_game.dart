@@ -137,7 +137,6 @@ class _GamePageState extends State<GamePage> {
                                             snapshotHost.data!.get("hostname");
                                         var winner =
                                             snapshotHost.data!.get("winner");
-
                                         if (winner == "None") {
                                           if (nickname != hostname) {
                                             if (snapshotHost.data!
