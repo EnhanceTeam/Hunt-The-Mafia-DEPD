@@ -229,12 +229,12 @@ class _GameRoomPageState extends State<GameRoomPage> {
                         );
                       } else {
                         // return Text("Waiting for host to start the game");
-                        return FutureBuilder<
+                        return StreamBuilder<
                             DocumentSnapshot<Map<String, dynamic>>>(
-                          future: FirebaseFirestore.instance
+                          stream: FirebaseFirestore.instance
                               .collection("rooms")
                               .doc(args.roomId)
-                              .get(),
+                              .snapshots(),
                           builder: (_, snapshotRoomReadiness) {
                             if (snapshotRoomReadiness.connectionState ==
                                 ConnectionState.waiting) {

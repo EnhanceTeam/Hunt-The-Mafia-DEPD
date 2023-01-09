@@ -21,6 +21,7 @@ class _GamePageState extends State<GamePage> {
     final String roomId = args.roomId;
 
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         key: _scaffoldKey,
         body: SafeArea(
           child: Container(
@@ -84,7 +85,7 @@ class _GamePageState extends State<GamePage> {
                                           child: Column(
                                             children: [
                                               CircleAvatar(
-                                                radius: 30,
+                                                radius: 20,
                                                 backgroundColor:
                                                     Theme.of(context)
                                                         .colorScheme
