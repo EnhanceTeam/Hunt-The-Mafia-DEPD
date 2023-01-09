@@ -49,24 +49,30 @@ class _GameRoomPageState extends State<GameRoomPage> {
             FirebaseFirestore.instance
                 .collection("rooms")
                 .doc(args.roomId)
-                .delete()
-                .then(((value) {
-              Navigator.pop(context, false);
-            }));
+                .delete();
           } else {
             FirebaseFirestore.instance
                 .collection("rooms")
                 .doc(args.roomId)
                 .get()
-                .then((value) {
-              if (value.get("hostname") == args.nickname)
+                .then((valueHost) {
+              if (valueHost.get("hostname") == args.nickname) {
                 FirebaseFirestore.instance
                     .collection("rooms")
                     .doc(args.roomId)
-                    .update({"hostname": value.get("players").first});
+                    .collection("players")
+                    .get()
+                    .then((valuePlayers) {
+                  FirebaseFirestore.instance
+                      .collection("rooms")
+                      .doc(args.roomId)
+                      .update({"hostname": valuePlayers.docs[0].id});
+                });
+              }
             });
           }
         });
+
         Navigator.pop(context, false);
 
         return Future.value(false);
@@ -116,9 +122,12 @@ class _GameRoomPageState extends State<GameRoomPage> {
                             .collection("players")
                             .snapshots(),
                         builder: (_, snapshot) {
-                          if (snapshot.hasError) {
-                            return Text('Error = ${snapshot.error}');
-                          } else if (snapshot.hasData) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else {
                             var hostname = snapshotHost.data!.get("hostname");
                             var data = snapshot.data!.docs;
                             var playerNicknames = data
@@ -160,10 +169,6 @@ class _GameRoomPageState extends State<GameRoomPage> {
                                 ],
                               ],
                             );
-                          } else {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
                           }
                         },
                       ),
@@ -185,9 +190,11 @@ class _GameRoomPageState extends State<GameRoomPage> {
                       .collection("players")
                       .snapshots(),
                   builder: (_, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error = ${snapshot.error}');
-                    } else if (snapshot.hasData) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
                       var hostname = snapshotHost.data!.get("hostname");
                       var data = snapshot.data!.docs;
                       var playerNicknames = data.map((doc) {
@@ -222,12 +229,12 @@ class _GameRoomPageState extends State<GameRoomPage> {
                         );
                       } else {
                         // return Text("Waiting for host to start the game");
-                        return StreamBuilder<
+                        return FutureBuilder<
                             DocumentSnapshot<Map<String, dynamic>>>(
-                          stream: FirebaseFirestore.instance
+                          future: FirebaseFirestore.instance
                               .collection("rooms")
                               .doc(args.roomId)
-                              .snapshots(),
+                              .get(),
                           builder: (_, snapshotRoomReadiness) {
                             if (snapshotRoomReadiness.connectionState ==
                                 ConnectionState.waiting) {
@@ -243,13 +250,13 @@ class _GameRoomPageState extends State<GameRoomPage> {
                                 return Text(
                                     "Waiting for host in preparation phase");
                               } else if (gameStart) {
-                                // WidgetsBinding.instance
-                                //     .addPostFrameCallback((_) {
-                                // Future.delayed(Duration(milliseconds: 2500),
-                                //     () {
-                                GameplayService.showPlayerRole(args.nickname,
-                                    args.roomId, _scaffoldKey.currentContext!);
-                                // });
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((_) {
+                                  Future.delayed(Duration.zero, () {
+                                    GameplayService.showPlayerRole(
+                                        args.nickname, args.roomId, context);
+                                  });
+                                });
 
                                 return Text("Game Starting");
                               } else {
@@ -264,10 +271,6 @@ class _GameRoomPageState extends State<GameRoomPage> {
                           },
                         );
                       }
-                    } else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
                     }
                   },
                 ),
